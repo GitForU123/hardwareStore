@@ -13,8 +13,9 @@ import {
   GoogleSigninButton,
 } from '@react-native-google-signin/google-signin';
 import auth from '@react-native-firebase/auth';
-import customColor from '../../../assets/colors/customColor';
+import customColor from '../../../src/assets/colors/customColor';
 import Feather from 'react-native-vector-icons/Feather';
+import {StackActions} from '@react-navigation/native';
 
 const LogIn = ({navigation}) => {
   const [emailAddress, setEmailAddress] = useState('');
@@ -26,7 +27,13 @@ const LogIn = ({navigation}) => {
       .signInWithEmailAndPassword(emailAddress, password)
       .then(() => {
         ToastAndroid.show('Successfully LoggedIn', ToastAndroid.SHORT);
-        navigation.navigate('AdminHome');
+        // navigation.navigate('AdminHome');
+        // navigation.replace('AdminHome');
+        // navigation.dispatch(StackActions.replace('AdminHome'));
+        navigation.reset({
+          index: 0,
+          routes: [{name: 'AdminHome'}],
+        });
       })
       .catch(error => {
         console.log(`${error.code}`);
@@ -37,7 +44,7 @@ const LogIn = ({navigation}) => {
     <View style={styles.container}>
       <ImageBackground
         style={{flex: 1}}
-        source={require('../../../assets/images/background.png')}>
+        source={require('../../assets/images/background.png')}>
         <Text style={styles.heading}>Sign In Here</Text>
         <View style={styles.inputWrapper}>
           <Feather name="mail" style={styles.iconStyle} />
@@ -64,6 +71,11 @@ const LogIn = ({navigation}) => {
             onPress={() => setIsPasswordShow(!isPasswordShow)}
           />
         </View>
+        <TouchableHighlight
+          onPress={() => navigation.navigate('ForgotPassWordScreen')}
+          style={styles.forgotPasswordWrapper}>
+          <Text style={styles.forgotPasswordText}>Forgot Password?</Text>
+        </TouchableHighlight>
         <TouchableHighlight
           style={styles.button}
           onPress={() => handleSignIn()}>
@@ -109,13 +121,6 @@ const styles = StyleSheet.create({
     margin: 8,
   },
   input: {
-    // margin: 10, // from the parent ie. container
-    // borderRadius: 5, // corner shape
-    // borderWidth: 1,
-    // borderColor: 'blue',
-    // backgroundColor: 'white',
-    // height: 40,
-    // padding: 10, // text inside the input padding
     flex: 1,
     fontSize: 18,
     padding: 5,
@@ -126,9 +131,6 @@ const styles = StyleSheet.create({
     alignSelf: 'center',
   },
   button: {
-    // flexDirection : 'row',
-    // flexWrap : 'wrap',
-    // width : "40%",
     margin: 10,
     backgroundColor: 'steelblue',
     height: 40,
@@ -144,6 +146,14 @@ const styles = StyleSheet.create({
     backgroundColor: 'grey',
   },
   googleButton: {width: 192, height: 48, alignSelf: 'center', marginTop: 10},
+  forgotPasswordWrapper: {
+    alignSelf: 'flex-end',
+    marginVertical: 5,
+    marginRight: 10,
+  },
+  forgotPasswordText: {
+    color: customColor.white,
+  },
 });
 
 export default LogIn;

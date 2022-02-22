@@ -11,7 +11,7 @@ import {
 } from 'react-native';
 import {SafeAreaView} from 'react-native-safe-area-context';
 import Feather from 'react-native-vector-icons/Feather';
-import customColor from '../../../assets/colors/customColor';
+import customColor from '../../../src/assets/colors/customColor';
 import auth from '@react-native-firebase/auth';
 
 const Register = ({navigation}) => {
@@ -26,7 +26,8 @@ const Register = ({navigation}) => {
       .createUserWithEmailAndPassword(userEmail, password)
       .then(() => {
         ToastAndroid.show('Sucessfully Registerd', ToastAndroid.SHORT);
-        navigation.navigate('LogIn');
+        // navigation.navigate('LogIn');
+        navigation.replace('LogIn');
       })
       .catch(error => {
         console.log(`errorcode : ${error.code} and error : ${error}`);
@@ -37,7 +38,7 @@ const Register = ({navigation}) => {
     <SafeAreaView style={styles.container}>
       <ImageBackground
         style={{flex: 1}}
-        source={require('../../../assets/images/background.png')}>
+        source={require('../../../src/assets/images/background.png')}>
         <View>
           <Text style={styles.heading}>Create Your Account</Text>
           <View style={styles.inputWrapper}>
