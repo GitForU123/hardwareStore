@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "904585426981",
+    "project_id": "myhardware-2f2e3",
+    "storage_bucket": "myhardware-2f2e3.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:904585426981:android:62bec4e56e37ae89df67cc",
+        "android_client_info": {
+          "package_name": "com.myhardware"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "904585426981-06vi140ig2b8qmk4v3nqq3t1vbtr4qe8.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBfCq86_yiefb2VxcanvXfqvkG-cbSII9I"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "904585426981-06vi140ig2b8qmk4v3nqq3t1vbtr4qe8.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
