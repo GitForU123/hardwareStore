@@ -1,4 +1,4 @@
-import React, {useState} from 'react';
+import React, {useState, useEffect} from 'react';
 import {
   View,
   Text,
@@ -11,6 +11,7 @@ import {
 import {
   GoogleSignin,
   GoogleSigninButton,
+  statusCodes,
 } from '@react-native-google-signin/google-signin';
 import auth from '@react-native-firebase/auth';
 import customColor from '../../../src/assets/colors/customColor';
@@ -21,6 +22,8 @@ const LogIn = ({navigation}) => {
   const [emailAddress, setEmailAddress] = useState('');
   const [password, setPassword] = useState('');
   const [isPasswordShow, setIsPasswordShow] = useState(false);
+  const [loggedIn, setloggedIn] = useState(false);
+   const [user, setUser] = useState();
 
   function handleSignIn() {
     auth()
@@ -39,6 +42,62 @@ const LogIn = ({navigation}) => {
         console.log(`${error.code}`);
         ToastAndroid.show(`${error.code}`, ToastAndroid.SHORT);
       });
+  }
+  const handleGoogleSignIn = async () => {
+    try {
+      await GoogleSignin.hasPlayServices();
+      const {accessToken, idToken} = await GoogleSignin.signIn();
+      console.log('Access token: ', accessToken);
+      console.log('--------');
+      console.log('Idtoken : ', idToken);
+      setloggedIn(true);
+      const credential = auth.GoogleAuthProvider.credential(
+        idToken,
+        accessToken,
+      );
+      auth()
+        .signInWithCredential(credential)
+        .then(() => {
+          ToastAndroid.show('Successfully LoggedIn', ToastAndroid.SHORT);
+          ToastAndroid.show(user.displayName, ToastAndroid.SHORT);
+          navigation.navigate('AdminHome');
+        })
+        .catch(error => {
+          console.log(`${error.code}`);
+          ToastAndroid.show(`${error.code}`, ToastAndroid.SHORT);
+        });
+    } catch (error) {
+      if (error.code === statusCodes.SIGN_IN_CANCELLED) {
+        // user cancelled the login flow
+        Alert.alert('Cancel');
+      } else if (error.code === statusCodes.IN_PROGRESS) {
+        Alert.alert('Signin in progress');
+        // operation (f.e. sign in) is in progress already
+      } else if (error.code === statusCodes.PLAY_SERVICES_NOT_AVAILABLE) {
+        Aler.alert('PLAY_SERVICES_NOT_AVAILABLE');
+        // play services not available or outdated
+      } else {
+        // some other error happened
+        console.log('some other error happend', error);
+      }
+    }
+  };
+  useEffect(() => {
+    GoogleSignin.configure({
+      scopes: ['email'], // what API you want to access on behalf of the user, default is email and profile
+      androidClientId:
+        '904585426981-06vi140ig2b8qmk4v3nqq3t1vbtr4qe8.apps.googleusercontent.com',
+      webClientId:
+        '904585426981-06vi140ig2b8qmk4v3nqq3t1vbtr4qe8.apps.googleusercontent.com', // client ID of type WEB for your server (needed to verify user ID and offline access)
+      offlineAccess: true, // if you want to access Google API on behalf of the user FROM YOUR SERVER
+    });
+    const subscriber = auth().onAuthStateChanged(onAuthStateChanged);
+    return subscriber; // unsubscribe on unmount
+  }, []);
+  function onAuthStateChanged(user) {
+    setUser(user);
+    console.log(user);
+    if (user) setloggedIn(true);
   }
   return (
     <View style={styles.container}>
@@ -93,6 +152,7 @@ const LogIn = ({navigation}) => {
           style={styles.googleButton}
           size={GoogleSigninButton.Size.Wide}
           color={GoogleSigninButton.Color.Dark}
+          onPress={() => handleGoogleSignIn()}
         />
       </ImageBackground>
     </View>

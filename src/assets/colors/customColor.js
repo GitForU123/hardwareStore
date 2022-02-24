@@ -6,4 +6,5 @@ export default {
   blue: '#0000ff',
   steelblue: '#4682b4',
   lightgrey: '#d3d3d3',
+  blurryEffect: 'rgba(0, 0, 0, 0.5)',
 };

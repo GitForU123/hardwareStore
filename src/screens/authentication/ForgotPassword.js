@@ -8,26 +8,64 @@ import {
   TouchableHighlight,
   ImageBackground,
   Alert,
+  Animated,
+  Pressable,
+  ToastAndroid,
 } from 'react-native';
 import Ionicons from 'react-native-vector-icons/Ionicons';
 import Feather from 'react-native-vector-icons/Feather';
 import customColor from '../../assets/colors/customColor';
 import Header from '../../components/Header';
 import auth from '@react-native-firebase/auth';
+import {useTheme} from '@react-navigation/native';
+import {useCardAnimation} from '@react-navigation/stack';
 
 export default function ForgotPasswordScreen({navigation}) {
   const [emailAddress, setEmailAddress] = useState('');
+  const {colors} = useTheme();
+  const {current} = useCardAnimation();
   const sendLink = email => {
-    auth().sendPasswordResetEmail(email);
-    Alert.alert('Check your mail and Reset Your Password');
-    navigation.goBack();
+    auth()
+      .sendPasswordResetEmail(email)
+      .then(() => {
+        Alert.alert('Check your mail and Reset Your Password');
+        navigation.goBack();
+      })
+      .catch(() => {
+        console.log('ErrorForResetLink', err);
+        ToastAndroid.show('Something wrong with email', ToastAndroid.LONG);
+      });
   };
   return (
     <View style={styles.container}>
-      <ImageBackground
-        style={{flex: 1}}
-        source={require('../../../src/assets/images/background.png')}>
-        <Header nav={navigation} title="Password Reset" />
+      <Pressable
+        style={[
+          StyleSheet.absoluteFill,
+          {backgroundColor: 'rgba(0, 0, 0, 0.5)'},
+        ]}
+        onPress={navigation.goBack}
+      />
+      <Animated.View
+        style={{
+          padding: 16,
+          width: '90%',
+          maxWidth: 400,
+          borderRadius: 3,
+          backgroundColor: colors.card,
+          transform: [
+            {
+              scale: current.progress.interpolate({
+                inputRange: [0, 1],
+                outputRange: [0.9, 1],
+                extrapolate: 'clamp',
+              }),
+            },
+          ],
+        }}>
+        {/* <ImageBackground
+          style={{flex: 1}}
+          source={require('../../../src/assets/images/background.png')}> */}
+        {/* <Header nav={navigation} title="Password Reset" /> */}
         <Text style={styles.heading}>Forgot Password</Text>
         <Text style={styles.content}>
           Enter your email , so that we can help you to recover your password.
@@ -49,7 +87,7 @@ export default function ForgotPasswordScreen({navigation}) {
           onPress={() => sendLink(emailAddress)}>
           <Text style={styles.buttonText}>Send Email</Text>
         </TouchableHighlight>
-      </ImageBackground>
+      </Animated.View>
     </View>
   );
 }
@@ -57,7 +95,9 @@ export default function ForgotPasswordScreen({navigation}) {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: customColor.white,
+    justifyContent: 'center',
+    alignItems: 'center',
+    // backgroundColor: customColor.white,
   },
 
   heading: {
@@ -72,7 +112,7 @@ const styles = StyleSheet.create({
     marginTop: 10,
     marginBottom: 20,
     marginHorizontal: 20,
-    color: customColor.white,
+    color: customColor.primaryColor,
   },
   inputWrapper: {
     flexDirection: 'row',
