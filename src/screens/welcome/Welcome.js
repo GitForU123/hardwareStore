@@ -31,6 +31,7 @@ const WelcomeScreen = ({navigation}) => {
       });
     }, 5000);
   };
+  
   function renderHeader() {
     return (
       <View
