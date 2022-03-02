@@ -17,31 +17,42 @@ import auth from '@react-native-firebase/auth';
 import customColor from '../../../src/assets/colors/customColor';
 import Feather from 'react-native-vector-icons/Feather';
 import {StackActions} from '@react-navigation/native';
+import useAuth from '../../hooks/useAuth';
 
 const LogIn = ({navigation}) => {
   const [emailAddress, setEmailAddress] = useState('');
   const [password, setPassword] = useState('');
   const [isPasswordShow, setIsPasswordShow] = useState(false);
   const [loggedIn, setloggedIn] = useState(false);
-   const [user, setUser] = useState();
+  const [user, setUser] = useState();
+  // const {handleGoogleSignIn} = useAuth();
+
+  // const handleGoogleAuth = () => {
+  //   handleGoogleSignIn();
+  //   navigation.replace('AdminHome');
+  // };
 
   function handleSignIn() {
-    auth()
-      .signInWithEmailAndPassword(emailAddress, password)
-      .then(() => {
-        ToastAndroid.show('Successfully LoggedIn', ToastAndroid.SHORT);
-        // navigation.navigate('AdminHome');
-        // navigation.replace('AdminHome');
-        // navigation.dispatch(StackActions.replace('AdminHome'));
-        navigation.reset({
-          index: 0,
-          routes: [{name: 'AdminHome'}],
+    if (emailAddress && password) {
+      auth()
+        .signInWithEmailAndPassword(emailAddress, password)
+        .then(() => {
+          ToastAndroid.show('Successfully LoggedIn', ToastAndroid.SHORT);
+          // navigation.navigate('AdminHome');
+          // navigation.replace('AdminHome');
+          // navigation.dispatch(StackActions.replace('AdminHome'));
+          navigation.reset({
+            index: 0,
+            routes: [{name: 'AdminHome'}],
+          });
+        })
+        .catch(error => {
+          console.log(`${error.code}`);
+          ToastAndroid.show(`${error.code}`, ToastAndroid.SHORT);
         });
-      })
-      .catch(error => {
-        console.log(`${error.code}`);
-        ToastAndroid.show(`${error.code}`, ToastAndroid.SHORT);
-      });
+    } else {
+      ToastAndroid.show('Please fill the credentials', ToastAndroid.SHORT);
+    }
   }
   const handleGoogleSignIn = async () => {
     try {
