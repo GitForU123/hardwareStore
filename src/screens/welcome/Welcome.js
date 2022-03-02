@@ -8,29 +8,39 @@ import {
   Button,
 } from 'react-native';
 import auth, {firebase} from '@react-native-firebase/auth';
+import useAuth from '../../hooks/useAuth';
+import {GoogleSignin} from '@react-native-google-signin/google-signin';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
 const WelcomeScreen = ({navigation}) => {
-  const [logged, setLogged] = useState(false);
+  // const [logged, setLogged] = useState(false);
+  const {user} = useAuth();
+  // console.log(user);
 
   useEffect(() => {
-    handleLogin();
-  }, [logged]);
+    // auth().onAuthStateChanged(function onAuthStateChanged(user) {
+    //   console.log('userDAtafromwelcom', user);
+    //   handleScreenTransition(user);
+    // });
+  }, []);
 
-  const handleLogin = () => {
-    setTimeout(function () {
-      auth().onAuthStateChanged(user => {
-        if (user !== null) {
-          navigation.replace('LogIn');
-        } else {
-          console.log('elseaaa', user);
+  // const handleScreenTransition = user => {
+  setTimeout(function () {
+    // const isSignedIn = GoogleSignin.isSignedIn();
+    let currentUser;
+    AsyncStorage.getItem('isUserSignedIn').then(res => {
+      currentUser = res;
+    });
+    console.log('useridfromWelcome', user);
+    if (currentUser) {
+      navigation.replace('AdminHome');
+    } else {
+      navigation.replace('Register');
 
-          navigation.replace('Register');
-
-          setLogged(true);
-        }
-      });
-    }, 5000);
-  };
+      // setLogged(true);
+    }
+  }, 2000);
+  // };
   function renderHeader() {
     return (
       <View

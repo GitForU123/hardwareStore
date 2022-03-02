@@ -21,18 +21,34 @@ const Register = ({navigation}) => {
 
   const [isPasswordShow, setIsPasswordShow] = useState(false);
 
+  const validateData = (userName, userEmail, userPassword) => {
+    const reg = /^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/;
+    if (!userName && !userEmail && !userPassword) {
+      ToastAndroid.show('Please fill all the details', ToastAndroid.LONG);
+      console.log('both email and password empty');
+      return false;
+    } else if (reg.test(userEmail) && userPassword.length >= 6) {
+      console.log('valid mail and password length greater than 6');
+      return true;
+    } else {
+      ToastAndroid.show('Please put valid data', ToastAndroid.LONG);
+      return false;
+    }
+  };
   const handleRegister = () => {
-    auth()
-      .createUserWithEmailAndPassword(userEmail, password)
-      .then(() => {
-        ToastAndroid.show('Sucessfully Registerd', ToastAndroid.SHORT);
-        // navigation.navigate('LogIn');
-        navigation.replace('LogIn');
-      })
-      .catch(error => {
-        console.log(`errorcode : ${error.code} and error : ${error}`);
-        ToastAndroid.show(`${error}`, ToastAndroid.LONG);
-      });
+    if (validateData(username, userEmail, password)) {
+      auth()
+        .createUserWithEmailAndPassword(userEmail, password)
+        .then(() => {
+          ToastAndroid.show('Sucessfully Registerd', ToastAndroid.SHORT);
+          // navigation.navigate('LogIn');
+          navigation.replace('LogIn');
+        })
+        .catch(error => {
+          console.log(`errorcode : ${error.code} and error : ${error}`);
+          ToastAndroid.show(`${error}`, ToastAndroid.LONG);
+        });
+    }
   };
   return (
     <SafeAreaView style={styles.container}>

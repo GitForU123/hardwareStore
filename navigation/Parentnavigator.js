@@ -1,10 +1,14 @@
 import {createStackNavigator, TransitionSpecs} from '@react-navigation/stack';
-import React from 'react';
-import AdminHome from '../src/screens/admin/Home';
+import React, {useState} from 'react';
+import useAuth from '../src/hooks/useAuth';
+
 import ForgotPasswordScreen from '../src/screens/authentication/ForgotPassword';
 import LogIn from '../src/screens/authentication/Login';
 import Register from '../src/screens/authentication/Register';
 import Welcome from '../src/screens/welcome/Welcome';
+import AsyncStorage from '@react-native-async-storage/async-storage';
+import AdminTabNavigator from './TabNavigator';
+import ProfileDrawer from './DrawerNavigator';
 
 const Stack = createStackNavigator();
 const config = {
@@ -24,9 +28,15 @@ const forFade = ({current}) => ({
   },
 });
 const ParentNavigator = () => {
+  // const {user} = useAuth();
+  const [currentUser, setCurrentuser] = useState();
+
+  AsyncStorage.getItem('isUserSignedIn').then(res => {
+    setCurrentuser(res);
+  });
   return (
     <Stack.Navigator
-      initialRouteName="Register"
+      initialRouteName="Welcome"
       screenOptions={{
         headerShown: false,
         gestureEnabled: true,
@@ -37,18 +47,24 @@ const ParentNavigator = () => {
         },
       }}>
       <Stack.Screen name="Welcome" component={Welcome} />
+
       <Stack.Screen name="Register" component={Register} />
       <Stack.Screen
         name="LogIn"
         component={LogIn}
         options={{cardStyleInterpolator: forFade}}
       />
-      <Stack.Screen name="AdminHome" component={AdminHome} />
       <Stack.Screen
         name="ForgotPassWordScreen"
         component={ForgotPasswordScreen}
-        options={{presentation: 'transparentModal', cardOverlayEnabled: true}}
+        options={{
+          presentation: 'transparentModal',
+          cardOverlayEnabled: true,
+        }}
       />
+
+      <Stack.Screen name="AdminHome" component={AdminTabNavigator} />
+      <Stack.Screen name="ProfileDrawer" component={ProfileDrawer} />
     </Stack.Navigator>
   );
 };
