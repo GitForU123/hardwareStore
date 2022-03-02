@@ -37,10 +37,12 @@ const WelcomeScreen = ({navigation}) => {
     } else {
       navigation.replace('Register');
 
+
       // setLogged(true);
     }
   }, 2000);
   // };
+
   function renderHeader() {
     return (
       <View
