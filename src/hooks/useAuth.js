@@ -16,6 +16,7 @@ import {
 } from '@react-native-google-signin/google-signin';
 import auth from '@react-native-firebase/auth';
 import AsyncStorage from '@react-native-async-storage/async-storage';
+import {firebase} from '@react-native-firebase/firestore';
 
 const AuthContext = createContext({});
 const config = {
@@ -29,6 +30,7 @@ const config = {
 
 export const AuthProvider = ({children}) => {
   const [user, setUser] = useState();
+  const [data, setData] = useState(null);
   //   const [loggedIn, setloggedIn] = useState(false);
   useEffect(() => {
     GoogleSignin.configure(config);
@@ -109,8 +111,28 @@ export const AuthProvider = ({children}) => {
         console.log('some error happened in storing signin info');
       });
   };
+  const getData = getCollection => {
+    const unsubscribe = firebase
+      .firestore()
+      .collection(`Inventory`)
+      .onSnapshot(snapshot => {
+        // console.log('SnapShot', snapshot.docs);
+        setData(snapshot.docs.map(doc => doc.data()));
+        getCollection(snapshot.docs.map(doc => doc.data()));
+        // return data;
+      });
+    return unsubscribe;
+  };
+
   return (
-    <AuthContext.Provider value={{handleGoogleSignIn, user, handleSignOut}}>
+    <AuthContext.Provider
+      value={{
+        handleGoogleSignIn,
+        user,
+        handleSignOut,
+        getData,
+        data,
+      }}>
       {children}
     </AuthContext.Provider>
   );

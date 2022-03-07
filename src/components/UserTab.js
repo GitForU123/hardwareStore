@@ -13,7 +13,7 @@ import useAuth from '../hooks/useAuth';
 const UserTab = ({navigation}) => {
   const {user} = useAuth();
   return (
-    <View>
+    <View style={styles.container}>
       {user ? (
         <View style={styles.userTabWrapper}>
           <Text style={styles.textStyle}>Hi,{user.displayName}</Text>
@@ -38,6 +38,9 @@ const UserTab = ({navigation}) => {
 };
 
 const styles = StyleSheet.create({
+  container: {
+    paddingVertical: 5,
+  },
   userTabWrapper: {
     flexDirection: 'row',
     justifyContent: 'space-between',
