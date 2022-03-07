@@ -9,6 +9,8 @@ import Welcome from '../src/screens/welcome/Welcome';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import AdminTabNavigator from './TabNavigator';
 import ProfileDrawer from './DrawerNavigator';
+import AddItem from '../src/screens/admin/AddItem';
+import CollectionScreen from '../src/screens/admin/CollectionScreen';
 
 const Stack = createStackNavigator();
 const config = {
@@ -65,6 +67,8 @@ const ParentNavigator = () => {
 
       <Stack.Screen name="AdminHome" component={AdminTabNavigator} />
       <Stack.Screen name="ProfileDrawer" component={ProfileDrawer} />
+      <Stack.Screen name="AddItem" component={AddItem} />
+      <Stack.Screen name="CollectionScreen" component={CollectionScreen} />
     </Stack.Navigator>
   );
 };
