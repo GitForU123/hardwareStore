@@ -1,17 +1,23 @@
 import React, {useEffect, useState} from 'react';
-import {View, Text, StyleSheet} from 'react-native';
+import {View, Text, StyleSheet, ScrollView} from 'react-native';
 import {useDispatch, useSelector} from 'react-redux';
 
 import ItemList from '../../components/ItemList';
 import {firebase} from '@react-native-firebase/firestore';
 import customColor from '../../assets/colors/customColor';
 import useAuth from '../../hooks/useAuth';
+import {getDataFromIncomingInventory} from '../../redux/actions/DBAction';
 const CollectionScreen = ({route}) => {
-  const {collection} = route.params;
+  const {collection} = route?.params;
   // const [data, setData] = useState([]);
-  const {data, getData} = useAuth();
+  // const {data, getData} = useAuth();
+  const {storeData} = useSelector(state => state.DBReducer);
   const [uniqueCollection, setUniqueCollection] = useState([]);
-  console.log('collectionNameReceived', collection);
+
+  // console.log('storeDataFromCollection', storeData);
+
+  // console.log(storeData.map(item => item.itemGroupId));
+  // console.log('collectionNameReceived', collection);
   // const getCollectionData = () => {
   //   // const docRef = firebase.firestore().collection('Inventory').doc();
 
@@ -34,9 +40,10 @@ const CollectionScreen = ({route}) => {
 
   // const {data, storeData} = useSelector(state => state.DBReducer);
 
-  // const dispatch = useDispatch();
+  const dispatch = useDispatch();
 
-  // const fetchList = collection => dispatch(getInventoryList(collection));
+  const fetchDataList = () =>
+    dispatch(getDataFromIncomingInventory(filterList));
   const filterList = comingData => {
     if (comingData) {
       const set = new Set();
@@ -48,7 +55,7 @@ const CollectionScreen = ({route}) => {
       }
       let arr = [];
       set.forEach(value => {
-        console.log(value);
+        // console.log(value);
         arr.push(value);
       });
       setUniqueCollection(arr);
@@ -60,37 +67,43 @@ const CollectionScreen = ({route}) => {
 
   useEffect(() => {
     // fetchList(collection);
+    fetchDataList();
     // setData(getCollectionData(collection));
-    const unsubscribe = getData(filterList);
-    return unsubscribe;
+    // const unsubscribe = getData(filterList);
+    // console.log(unsubscribe);
+    // return () => {
+    //   unsubscribe();
+    // };
   }, []);
-  if (data && uniqueCollection.length > 0) {
-    return (
+
+  return (
+    <ScrollView>
+      <Text style={styles.heading}>CollectionScreen</Text>
       <View>
-        <Text style={styles.heading}>CollectionScreen</Text>
-        <View>
-          {uniqueCollection.map(item => {
-            return (
-              <View key={item}>
-                <Text style={styles.titleHeader}>{item}</Text>
-                <ItemList
-                  itemData={data.filter(data => {
-                    return data.itemGroup === item;
-                  })}
-                />
-              </View>
-            );
-          })}
-        </View>
+        {uniqueCollection.map(item => {
+          return (
+            <View key={item}>
+              <Text style={styles.titleHeader}>{item}</Text>
+              <ItemList
+                itemData={storeData.filter(data => {
+                  return (
+                    data.itemCategory === collection && data.itemGroup === item
+                  );
+                })}
+              />
+            </View>
+          );
+        })}
       </View>
-    );
-  } else {
-    return (
-      <View>
-        <Text>FetchingData...</Text>
-      </View>
-    );
-  }
+    </ScrollView>
+  );
+  // } else {
+  //   return (
+  //     <View>
+  //       <Text>FetchingData...</Text>
+  //     </View>
+  //   );
+  // }
 };
 
 const styles = StyleSheet.create({

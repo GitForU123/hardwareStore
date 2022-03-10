@@ -12,8 +12,9 @@ const Item = ({item}) => {
           style={styles.image}
         />
 
-        <Text style={styles.title}>{item.itemName}</Text>
-        <Text style={styles.title}>{item.itemPrice}</Text>
+        <Text style={styles.title}>Name : {item.itemName}</Text>
+        <Text style={styles.title}> Price : {item.itemPrice} Rs</Text>
+        <Text style={styles.title}>Count : {item?.count}</Text>
       </View>
     </View>
   );
@@ -22,7 +23,7 @@ const Item = ({item}) => {
 const styles = StyleSheet.create({
   itemWrapper: {
     height: 250,
-    width: 120,
+    width: 150,
     // borderWidth: 1,
     // borderColor: 'steelblue',
     // backgroundColor: 'beige',
@@ -35,7 +36,7 @@ const styles = StyleSheet.create({
     // marginHorizontal: 5,
   },
   title: {
-    fontSize: 16,
+    fontSize: 14,
     paddingRight: 16,
     alignSelf: 'flex-start',
     marginVertical: 2,

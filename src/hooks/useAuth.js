@@ -114,13 +114,18 @@ export const AuthProvider = ({children}) => {
   const getData = getCollection => {
     const unsubscribe = firebase
       .firestore()
-      .collection(`Inventory`)
-      .onSnapshot(snapshot => {
-        // console.log('SnapShot', snapshot.docs);
-        setData(snapshot.docs.map(doc => doc.data()));
-        getCollection(snapshot.docs.map(doc => doc.data()));
-        // return data;
-      });
+      .collection(`IncomingInventory`)
+      .onSnapshot(
+        snapshot => {
+          // console.log('SnapShot', snapshot.docs);
+          setData(snapshot.docs.map(doc => doc.data()));
+          getCollection(snapshot.docs.map(doc => doc.data()));
+          // return data;
+        },
+        error => {
+          console.log('error listening to snapshot', error);
+        },
+      );
     return unsubscribe;
   };
 

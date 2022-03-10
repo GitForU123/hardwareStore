@@ -11,6 +11,7 @@ import {
 import {useDispatch, useSelector} from 'react-redux';
 import {
   getCollectionList,
+  getDataFromIncomingInventory,
   getInventoryData,
   getInventoryList,
 } from '../../redux/actions/DBAction';
@@ -27,7 +28,8 @@ import {ActivityIndicator} from 'react-native';
 const AdminHome = ({navigation}) => {
   // const {storeData} = useSelector(state => state.DBReducer);
   // const [data, setData] = useState([]);
-  const {data, getData} = useAuth();
+  // const {data, getData} = useAuth();
+
   const [uniqueCollection, setUniqueCollection] = useState([]);
   // const {getListData, collectionData} = useAuth();
   // console.log(collectionData);
@@ -55,8 +57,8 @@ const AdminHome = ({navigation}) => {
   //       filterList(collectionData);
   //     });
   // };
-  // const dispatch = useDispatch();
-  // const fetchData = () => dispatch(getInventoryData());
+  const dispatch = useDispatch();
+  const fetchData = () => dispatch(getDataFromIncomingInventory(filterList));
   const filterList = comingData => {
     if (comingData) {
       const set = new Set();
@@ -65,7 +67,7 @@ const AdminHome = ({navigation}) => {
       }
       let arr = [];
       set.forEach(value => {
-        console.log(value);
+        // console.log(value);
         arr.push(value);
       });
       setUniqueCollection(arr);
@@ -88,8 +90,15 @@ const AdminHome = ({navigation}) => {
   //   console.log('some Error on querySnap');
   // };
   useEffect(() => {
-    const unsubscribe = getData(filterList);
-    return unsubscribe;
+    // const unsubscribe = getData(filterList);
+    // return () => {
+    //   unsubscribe();
+    // };
+    const listener = navigation.addListener('focus', () => {
+      fetchData();
+    });
+
+    return () => listener.remove();
     // fetchData('Stationary', 'Pen');
     // handleLoader();
     // fetchData(filterListCallback);
@@ -102,43 +111,48 @@ const AdminHome = ({navigation}) => {
     //   .collection('Items')
     //   .get()
     //   .then(onResult, onError);
-  }, []);
+  }, [navigation]);
 
   // const handleOut = () => {
   //   handleSignOut();
   //   navigation.replace('Register');
+
   // };
-  if (data) {
-    return (
-      <View>
-        <Text style={styles.heading}>Admin Home Screen</Text>
-        <UserTab />
-        <TouchableOpacity
-          onPress={() => navigation.navigate('AddItem')}
-          style={styles.buttonStyles}>
-          <Text style={styles.buttonText}>GO TO ADDITEM</Text>
-        </TouchableOpacity>
-        <View style={styles.menuWrapper}>
-          {uniqueCollection.map(item => {
-            return (
-              <View key={item}>
-                <MenuItem title={item} />
-              </View>
-            );
-          })}
-        </View>
+  // if (storeData.length) {
+  return (
+    <View style={styles.container}>
+      <Text style={styles.heading}>Admin Home Screen</Text>
+      <UserTab />
+      <TouchableOpacity
+        onPress={() => navigation.navigate('AddItem')}
+        style={styles.buttonStyles}>
+        <Text style={styles.buttonText}>GO TO ADDITEM</Text>
+      </TouchableOpacity>
+      <View style={styles.menuWrapper}>
+        {uniqueCollection.map(item => {
+          return (
+            <View key={item}>
+              <MenuItem title={item} />
+            </View>
+          );
+        })}
       </View>
-    );
-  } else {
-    return (
-      <View>
-        <Text>Fetching...</Text>
-      </View>
-    );
-  }
+    </View>
+  );
+  // } else {
+  //   return (
+  //     <View>
+  //       <Text>Fetching...</Text>
+  //     </View>
+  //   );
+  // }
 };
 
 const styles = StyleSheet.create({
+  container: {
+    backgroundColor: customColor.white,
+    flex: 1,
+  },
   heading: {
     textAlign: 'center',
     fontSize: 20,
