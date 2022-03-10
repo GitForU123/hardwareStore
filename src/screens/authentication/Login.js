@@ -216,7 +216,7 @@ const styles = StyleSheet.create({
   buttonCancel: {
     backgroundColor: 'grey',
   },
-  googleButton: {width: 192, height: 48, alignSelf: 'center', marginTop: 10},
+  googleButton: {width: 192, height: 60, alignSelf: 'center', marginTop: 10},
   forgotPasswordWrapper: {
     alignSelf: 'flex-end',
     marginVertical: 5,

@@ -11,6 +11,8 @@ import AdminTabNavigator from './TabNavigator';
 import ProfileDrawer from './DrawerNavigator';
 import AddItem from '../src/screens/admin/AddItem';
 import CollectionScreen from '../src/screens/admin/CollectionScreen';
+import DatePicker from '../src/components/DatePicker';
+import CheckOut from '../src/screens/admin/Checkout';
 
 const Stack = createStackNavigator();
 const config = {
@@ -69,6 +71,15 @@ const ParentNavigator = () => {
       <Stack.Screen name="ProfileDrawer" component={ProfileDrawer} />
       <Stack.Screen name="AddItem" component={AddItem} />
       <Stack.Screen name="CollectionScreen" component={CollectionScreen} />
+      <Stack.Screen
+        name="Calendar"
+        component={DatePicker}
+        options={{
+          presentation: 'transparentModal',
+          cardOverlayEnabled: true,
+        }}
+      />
+      <Stack.Screen name="CheckOut" component={CheckOut} />
     </Stack.Navigator>
   );
 };

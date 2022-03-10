@@ -26,9 +26,14 @@ const ItemList = ({itemData}) => {
           showsHorizontalScrollIndicator={false}
           data={itemData}
           horizontal={true}
-          keyExtractor={item => item.itemId}
+          keyExtractor={item => item.itemGroupId}
           renderItem={({item}) => {
-            return <Item item={item} />;
+            return (
+              <TouchableOpacity
+                onPress={() => navigation.navigate('CheckOut', {item: item})}>
+                <Item item={item} />
+              </TouchableOpacity>
+            );
           }}
         />
       </View>
