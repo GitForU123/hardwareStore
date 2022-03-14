@@ -40,7 +40,7 @@ const ParentNavigator = () => {
   });
   return (
     <Stack.Navigator
-      initialRouteName="Welcome"
+      initialRouteName="AdminHome"
       screenOptions={{
         headerShown: false,
         gestureEnabled: true,

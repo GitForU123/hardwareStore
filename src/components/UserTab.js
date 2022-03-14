@@ -11,8 +11,8 @@ import {
 } from 'react-native';
 import useAuth from '../hooks/useAuth';
 
-const UserTab = () => {
-  const navigation = useNavigation();
+const UserTab = ({navigation}) => {
+  // const navigation = useNavigation();
   const {user} = useAuth();
   return (
     <View style={styles.container}>

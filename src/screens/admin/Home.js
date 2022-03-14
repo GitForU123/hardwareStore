@@ -24,6 +24,7 @@ import {firebase, doc, setDocs} from '@react-native-firebase/firestore';
 import useAuth from '../../hooks/useAuth';
 import MenuItem from '../../components/MenuItem';
 import {ActivityIndicator} from 'react-native';
+import Header from '../../components/Header';
 
 const AdminHome = ({navigation}) => {
   // const {storeData} = useSelector(state => state.DBReducer);
@@ -121,8 +122,9 @@ const AdminHome = ({navigation}) => {
   // if (storeData.length) {
   return (
     <View style={styles.container}>
+      {/* <Header title=" Home" nav={navigation} /> */}
       <Text style={styles.heading}>Admin Home Screen</Text>
-      <UserTab />
+      <UserTab navigation={navigation} />
       <TouchableOpacity
         onPress={() => navigation.navigate('AddItem')}
         style={styles.buttonStyles}>
@@ -176,6 +178,7 @@ const styles = StyleSheet.create({
 
     borderRadius: 3,
     marginHorizontal: 20,
+    paddingBottom: 10,
   },
   buttonText: {
     color: '#ffffff',
