@@ -1,17 +1,17 @@
-import React, {useEffect, useState} from 'react';
-import {View, Text, StyleSheet, ScrollView} from 'react-native';
-import {useDispatch, useSelector} from 'react-redux';
+import React, { useEffect, useState } from 'react';
+import { View, Text, StyleSheet, ScrollView } from 'react-native';
+import { useDispatch, useSelector } from 'react-redux';
 
 import ItemList from '../../components/ItemList';
-import {firebase} from '@react-native-firebase/firestore';
+import { firebase } from '@react-native-firebase/firestore';
 import customColor from '../../assets/colors/customColor';
 import useAuth from '../../hooks/useAuth';
-import {getDataFromIncomingInventory} from '../../redux/actions/DBAction';
-const CollectionScreen = ({route}) => {
-  const {collection} = route?.params;
+import { getDataFromIncomingInventory } from '../../redux/actions/DBAction';
+const CollectionScreen = ({ route }) => {
+  const { collection } = route?.params;
   // const [data, setData] = useState([]);
   // const {data, getData} = useAuth();
-  const {storeData} = useSelector(state => state.DBReducer);
+  const { storeData } = useSelector(state => state.DBReducer);
   const [uniqueCollection, setUniqueCollection] = useState([]);
 
   // console.log('storeDataFromCollection', storeData);
@@ -77,8 +77,9 @@ const CollectionScreen = ({route}) => {
   }, []);
 
   return (
-    <ScrollView>
-      <Text style={styles.heading}>CollectionScreen</Text>
+    <ScrollView style={styles.itemWrapper}>
+
+      <Text style={styles.heading}>Items</Text>
       <View>
         {uniqueCollection.map(item => {
           return (
@@ -95,6 +96,7 @@ const CollectionScreen = ({route}) => {
           );
         })}
       </View>
+
     </ScrollView>
   );
   // } else {
@@ -107,15 +109,26 @@ const CollectionScreen = ({route}) => {
 };
 
 const styles = StyleSheet.create({
+  itemWrapper: {
+
+    backgroundColor: "#EEE8AA",
+
+
+
+  },
+  itemStyle: {
+    flexDirection: 'column',
+    paddingLeft: 10,
+  },
   heading: {
     textAlign: 'center',
-    fontSize: 20,
+    fontSize: 30,
     fontFamily: 'Montserrat-Medium',
     paddingVertical: 5,
     color: customColor.primaryColor,
   },
   titleHeader: {
-    fontSize: 16,
+    fontSize: 20,
     fontWeight: 'bold',
     color: 'steelblue',
     marginLeft: 15,

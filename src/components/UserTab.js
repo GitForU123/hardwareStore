@@ -1,4 +1,4 @@
-import {useNavigation} from '@react-navigation/native';
+import { useNavigation } from '@react-navigation/native';
 import React from 'react';
 import {
   View,
@@ -11,9 +11,9 @@ import {
 } from 'react-native';
 import useAuth from '../hooks/useAuth';
 
-const UserTab = ({navigation}) => {
+const UserTab = ({ navigation }) => {
   // const navigation = useNavigation();
-  const {user} = useAuth();
+  const { user } = useAuth();
   return (
     <View style={styles.container}>
       {user ? (
@@ -22,7 +22,7 @@ const UserTab = ({navigation}) => {
           <TouchableOpacity
             style={styles.imageStyle}
             onPress={() => navigation.navigate('ProfileDrawer')}>
-            <Image style={styles.imageStyle} source={{uri: user.photoURL}} />
+            <Image style={styles.imageStyle} source={{ uri: user.photoURL }} />
           </TouchableOpacity>
         </View>
       ) : (
@@ -48,16 +48,20 @@ const styles = StyleSheet.create({
     justifyContent: 'space-between',
   },
   imageStyle: {
-    width: 40,
-    height: 40,
+    width: 50,
+    height: 50,
     borderRadius: 40,
     marginRight: 15,
   },
   textStyle: {
     alignSelf: 'center',
     marginLeft: 15,
-    borderBottomWidth: 1,
+    //borderBottomWidth: 1,
     paddingBottom: 2,
+    fontSize: 18,
+    fontWeight: 'bold',
+    color: 'black'
   },
 });
 export default UserTab;
+
