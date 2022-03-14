@@ -1,6 +1,7 @@
 import {applyMiddleware, combineReducers, createStore} from 'redux';
 import thunk from 'redux-thunk';
 import DBReducer from '../reducers/DBReducer';
+import logger from 'redux-logger';
 
 const rootReducer = combineReducers({DBReducer});
 

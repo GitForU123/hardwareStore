@@ -38,7 +38,7 @@ export const AuthProvider = ({children}) => {
     auth().onAuthStateChanged(function onAuthStateChanged(user) {
       setUser(user);
       //   setloggedIn(user ? true : false);
-      console.log('userDatafromuseAuth', user);
+      // console.log('userDatafromuseAuth', user);
     });
     // AsyncStorage.getItem('isUserSignedIn')
     //   .then(res => {

@@ -22,7 +22,8 @@ import {firebase} from '@react-native-firebase/firestore';
 import DropDown from 'react-native-paper-dropdown';
 import categoryListData from '../../data/categoryListData';
 import categoryToGroup from '../../data/categoryToGroup';
-const AddItem = ({navigation, route}) => {
+import {useTheme, TextInput as PaperTextInput} from 'react-native-paper';
+const AddItem = ({navigation, route, theme}) => {
   const [itemName, setItemName] = useState('');
   const [itemGroupId, setItemGroupId] = useState('');
   const [itemCategory, setItemCategory] = useState('');
@@ -93,6 +94,8 @@ const AddItem = ({navigation, route}) => {
       });
   };
 
+  const paperTheme = useTheme();
+  // const paperTheme = theme;
   return (
     <ScrollView>
       <Text style={styles.heading}>Add Item Here</Text>
@@ -104,9 +107,27 @@ const AddItem = ({navigation, route}) => {
         }
         style={styles.imageContainer}
       />
+      <PaperTextInput
+        mode="outlined"
+        label="Group ID"
+        onChangeText={newText => setItemGroupId(newText)}
+        value={itemGroupId}
+        theme={paperTheme}
+        style={styles.paperInput}
+        onEndEditing={() => checkItemExists(itemGroupId)}
+
+        // style={styles.paperInput}
+      />
+      {/* <TextInput
+        style={[styles.input]}
+        label="ItemGroupId"
+        onChangeText={newText => setItemGroupId(newText)}
+        value={itemGroupId}
+        onEndEditing={() => checkItemExists(itemGroupId)}
+      /> */}
       <View style={styles.dropDownWrapper}>
         <DropDown
-          label="ItemCategories"
+          label="Categories"
           mode="outlined"
           visible={showDropDown}
           showDropDown={() => setShowDropDown(true)}
@@ -118,7 +139,7 @@ const AddItem = ({navigation, route}) => {
       </View>
       <View style={styles.dropDownWrapper}>
         <DropDown
-          label="ItemGroup"
+          label="Group"
           mode="outlined"
           visible={showGroupDropDown}
           showDropDown={() => setShowGroupDropDown(true)}
@@ -126,6 +147,7 @@ const AddItem = ({navigation, route}) => {
           value={itemGroup}
           setValue={setItemGroup}
           list={categoryToGroup[`${itemCategory}`]}
+          theme={paperTheme}
         />
       </View>
       {/* <DropDownPicker
@@ -136,50 +158,74 @@ const AddItem = ({navigation, route}) => {
         items={categoryListData}
         setItems={setCategoryListData}
       /> */}
-      <TextInput
-        style={[styles.input]}
-        placeholder="ItemGroupId"
-        onChangeText={newText => setItemGroupId(newText)}
-        value={itemGroupId}
-        onEndEditing={() => checkItemExists(itemGroupId)}
-      />
+
       {/* <TextInput
         style={[styles.input]}
-        placeholder="Item Category"
+        label="Item Category"
         onChangeText={newText => setItemCategory(newText)}
         value={itemCategory}
       /> */}
       {/* 
       <TextInput
         style={[styles.input]}
-        placeholder="Item Group"
+        label="Item Group"
         onChangeText={newText => setItemGroup(newText)}
         value={itemGroup}
       /> */}
+      <PaperTextInput
+        mode="outlined"
+        label="Name"
+        value={itemName}
+        onChangeText={text => setItemName(text)}
+        theme={paperTheme}
+        style={styles.paperInput}
 
-      <TextInput
+        // style={styles.paperInput}
+      />
+      {/* <TextInput
         style={[styles.input]}
-        placeholder="Item Name"
+        label="Item Name"
         onChangeText={newText => setItemName(newText)}
         value={itemName}
-      />
-      <TextInput
-        style={[styles.input]}
-        placeholder="Item Count"
+      /> */}
+
+      <PaperTextInput
+        mode="outlined"
+        label="Count"
         onChangeText={newText => setCount(newText)}
         value={count}
+        theme={paperTheme}
+        style={styles.paperInput}
+
+        // style={styles.paperInput}
       />
-      <AddImage setURL={setItemURL} />
-      <TextInput
+      {/* <TextInput
         style={[styles.input]}
-        placeholder="Item Price"
+        label="Item Count"
+        onChangeText={newText => setCount(newText)}
+        value={count}
+      /> */}
+      <AddImage setURL={setItemURL} />
+      <PaperTextInput
+        mode="outlined"
+        label="Price"
         onChangeText={newText => setItemPrice(newText)}
         value={itemPrice}
+        theme={paperTheme}
+        style={styles.paperInput}
+
+        // style={styles.paperInput}
       />
+      {/* <TextInput
+        style={[styles.input]}
+        label="Item Price"
+        onChangeText={newText => setItemPrice(newText)}
+        value={itemPrice}
+      /> */}
       {/* <View style={styles.dateInputWrapper}>
         <TextInput
           style={{flex: 1, backgroundColor: '#fff'}}
-          placeholder="Pick Incoming Date format(yyyy-mm-dd)"
+          label="Pick Incoming Date format(yyyy-mm-dd)"
           onChangeText={newText => setIncomingDate(newText)}
           value={route.params?.datePicked}
         />
@@ -192,7 +238,7 @@ const AddItem = ({navigation, route}) => {
       {/* <View style={styles.dateInputWrapper}>
         <TextInput
           style={{flex: 1, backgroundColor: '#fff'}}
-          placeholder="Pick OutGoing Date  format(yyyy-mm-dd)"
+          label="Pick OutGoing Date  format(yyyy-mm-dd)"
           // onChangeText={newText => setOutGoingDate(newText)}
           value={route.params?.outGoingDate}
         />
@@ -231,6 +277,14 @@ const styles = StyleSheet.create({
   },
   dropDownWrapper: {
     padding: 10,
+  },
+  paperInput: {
+    backgroundColor: customColor.white,
+    borderColor: customColor.primaryColor,
+    marginHorizontal: 10,
+    marginBottom: 5,
+    fontSize: 16,
+    // height: 50,
   },
   input: {
     margin: 8,

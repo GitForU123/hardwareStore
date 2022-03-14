@@ -32,7 +32,7 @@ export default function DBReducer(state = initialState, action) {
     case UPDATE_SOLD_INVENTORY:
       return {
         ...state,
-        soldList: soldList.map(item => {
+        soldList: state.soldList.map(item => {
           if (item.itemGroupId === action.payload.itemGroupId) {
             return {
               ...item,
@@ -45,7 +45,7 @@ export default function DBReducer(state = initialState, action) {
     case DELETE_INVENTORY:
       return {
         ...state,
-        storeData: storeData.filter(
+        storeData: state.storeData.filter(
           item => item.itemGroupId !== action.payload.id,
         ),
       };
@@ -53,7 +53,7 @@ export default function DBReducer(state = initialState, action) {
     case UPDATE_INVENTORY:
       return {
         ...state,
-        storeData: storeData.map(item => {
+        storeData: state.storeData.map(item => {
           if (item.itemGroupId === action.payload.id) {
             return {
               ...item,
