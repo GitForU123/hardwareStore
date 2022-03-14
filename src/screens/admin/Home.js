@@ -1,4 +1,4 @@
-import React, {useEffect, useState} from 'react';
+import React, { useEffect, useState } from 'react';
 import {
   View,
   Text,
@@ -8,7 +8,8 @@ import {
   Image,
   TouchableOpacity,
 } from 'react-native';
-import {useDispatch, useSelector} from 'react-redux';
+import Icon from 'react-native-vector-icons/FontAwesome';
+import { useDispatch, useSelector } from 'react-redux';
 import {
   getCollectionList,
   getDataFromIncomingInventory,
@@ -20,13 +21,13 @@ import database from '@react-native-firebase/database';
 import customColor from '../../assets/colors/customColor';
 import UserTab from '../../components/UserTab';
 import ItemList from '../../components/ItemList';
-import {firebase, doc, setDocs} from '@react-native-firebase/firestore';
+import { firebase, doc, setDocs } from '@react-native-firebase/firestore';
 import useAuth from '../../hooks/useAuth';
 import MenuItem from '../../components/MenuItem';
-import {ActivityIndicator} from 'react-native';
+import { ActivityIndicator } from 'react-native';
 import Header from '../../components/Header';
 
-const AdminHome = ({navigation}) => {
+const AdminHome = ({ navigation }) => {
   // const {storeData} = useSelector(state => state.DBReducer);
   // const [data, setData] = useState([]);
   // const {data, getData} = useAuth();
@@ -122,14 +123,18 @@ const AdminHome = ({navigation}) => {
   // if (storeData.length) {
   return (
     <View style={styles.container}>
-      {/* <Header title=" Home" nav={navigation} /> */}
-      <Text style={styles.heading}>Admin Home Screen</Text>
-      <UserTab navigation={navigation} />
+      <Text style={styles.heading}>Dashboard </Text>
+      <UserTab />
       <TouchableOpacity
         onPress={() => navigation.navigate('AddItem')}
         style={styles.buttonStyles}>
-        <Text style={styles.buttonText}>GO TO ADDITEM</Text>
+        <Icon name="plus" size={35} color="brown" />
       </TouchableOpacity>
+      {/* <TouchableOpacity
+        onPress={() => navigation.navigate('AddItem')}
+        style={styles.buttonStyles}>
+        <Text style={styles.buttonText}>GO TO ADDITEM</Text>
+      </TouchableOpacity> */}
       <View style={styles.menuWrapper}>
         {uniqueCollection.map(item => {
           return (
@@ -157,13 +162,14 @@ const styles = StyleSheet.create({
   },
   heading: {
     textAlign: 'center',
-    fontSize: 20,
+    fontSize: 30,
     fontFamily: 'Montserrat-Medium',
     paddingVertical: 15,
     color: customColor.primaryColor,
   },
   menuWrapper: {
-    marginTop: 10,
+    marginTop: 30,
+
     flexDirection: 'row',
     justifyContent: 'center',
     // backgroundColor: 'black',
@@ -172,13 +178,20 @@ const styles = StyleSheet.create({
     flexWrap: 'wrap',
   },
   buttonStyles: {
-    backgroundColor: 'black',
 
-    height: 40,
+    position: "absolute",
+    bottom: 0,
+    width: 50,
+    height: 50,
+    borderRadius: 40,
+    marginRight: 15,
+    alignSelf: "flex-end",
 
-    borderRadius: 3,
-    marginHorizontal: 20,
-    paddingBottom: 10,
+
+
+
+
+
   },
   buttonText: {
     color: '#ffffff',

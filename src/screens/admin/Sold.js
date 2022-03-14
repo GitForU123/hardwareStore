@@ -1,5 +1,5 @@
-import {firebase} from '@react-native-firebase/firestore';
-import React, {useEffect, useState} from 'react';
+import { firebase } from '@react-native-firebase/firestore';
+import React, { useEffect, useState } from 'react';
 import {
   View,
   Text,
@@ -8,15 +8,15 @@ import {
   Image,
   SafeAreaView,
 } from 'react-native';
-import {useDispatch, useSelector} from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import customColor from '../../assets/colors/customColor';
 import SoldItem from '../../components/SoldItem';
 import useAuth from '../../hooks/useAuth';
-import {getSoldInventory} from '../../redux/actions/DBAction';
+import { getSoldInventory } from '../../redux/actions/DBAction';
 
 const Sold = () => {
   // const {data, getData} = useAuth();
-  const {soldList} = useSelector(state => state.DBReducer);
+  const { soldList } = useSelector(state => state.DBReducer);
   // console.log(soldList);
   // const [outGoingList, setOutGoingList] = useState([]);
 
@@ -55,15 +55,17 @@ const Sold = () => {
 
   return (
     <SafeAreaView>
-      <Text style={styles.heading}>Sold Inventory</Text>
-      <View style={styles.listWrapper}>
-        <FlatList
-          data={soldList}
-          keyExtractor={item => item.itemGroupId}
-          renderItem={({item}) => {
-            return <SoldItem item={item} />;
-          }}
-        />
+      <View style={styles.container}>
+        <Text style={styles.heading}>Sold Inventory</Text>
+        <View style={styles.listWrapper}>
+          <FlatList
+            data={soldList}
+            keyExtractor={item => item.itemGroupId}
+            renderItem={({ item }) => {
+              return <SoldItem item={item} />;
+            }}
+          />
+        </View>
       </View>
     </SafeAreaView>
   );
@@ -71,11 +73,12 @@ const Sold = () => {
 
 const styles = StyleSheet.create({
   container: {
-    flex: 1,
+    backgroundColor: 'white'
+
   },
   heading: {
     textAlign: 'center',
-    fontSize: 20,
+    fontSize: 25,
     fontFamily: 'Montserrat-Medium',
     paddingVertical: 15,
     color: customColor.primaryColor,
@@ -83,6 +86,8 @@ const styles = StyleSheet.create({
   listWrapper: {
     paddingHorizontal: 10,
     paddingBottom: 100,
+
+
   },
 });
 
