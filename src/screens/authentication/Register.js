@@ -9,6 +9,7 @@ import {
   ImageBackground,
   ToastAndroid,
 } from 'react-native';
+import firestore from '@react-native-firebase/firestore';
 import {SafeAreaView} from 'react-native-safe-area-context';
 import Feather from 'react-native-vector-icons/Feather';
 import customColor from '../../../src/assets/colors/customColor';
@@ -18,6 +19,9 @@ const Register = ({navigation}) => {
   const [username, setUserName] = useState('');
   const [userEmail, setuserEmail] = useState('');
   const [password, setPassword] = useState('');
+  const [phone, setPhone] = useState();
+  const [city, setCity] = useState('Please update address');
+  const [address, setAddress] = useState(' ');
 
   const [isPasswordShow, setIsPasswordShow] = useState(false);
 
@@ -35,12 +39,25 @@ const Register = ({navigation}) => {
       return false;
     }
   };
-  const handleRegister = () => {
+  const handleRegister = async () => {
     if (validateData(username, userEmail, password)) {
-      auth()
+      await auth()
         .createUserWithEmailAndPassword(userEmail, password)
-        .then(() => {
+        .then(async() => {
           ToastAndroid.show('Sucessfully Registerd', ToastAndroid.SHORT);
+          const usersData = await firestore()
+            .collection('users')
+            .add({username, userEmail});
+            await firestore().collection('users').doc(usersData.id).set({
+              id: usersData.id,
+              username, 
+              userEmail,
+              phone, 
+              city,
+              address,
+              image: null, 
+              uid: auth().currentUser?.uid,
+            });  
           // navigation.navigate('LogIn');
           navigation.replace('LogIn');
         })
@@ -77,6 +94,18 @@ const Register = ({navigation}) => {
               placeholder="Enter Your  Email "
             />
           </View>
+
+          <View style={styles.inputWrapper}>
+            <Feather name="phone" style={styles.iconStyle} />
+            <TextInput
+              style={styles.inputs}
+              onChangeText={text => setPhone(text)}
+              value={phone}
+              keyboardType="numeric"
+              placeholder="Enter Your  Phone Number"
+            />
+          </View>
+
           <View style={styles.inputWrapper}>
             <Feather name="lock" style={styles.iconStyle} />
             <TextInput
