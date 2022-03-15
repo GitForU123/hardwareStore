@@ -11,8 +11,8 @@ import {
 } from 'react-native';
 import useAuth from '../hooks/useAuth';
 
-const UserTab = ({ navigation }) => {
-  // const navigation = useNavigation();
+const UserTab = () => {
+  const navigation = useNavigation();
   const { user } = useAuth();
   return (
     <View style={styles.container}>
@@ -21,7 +21,8 @@ const UserTab = ({ navigation }) => {
           <Text style={styles.textStyle}>Hi,{user.displayName}</Text>
           <TouchableOpacity
             style={styles.imageStyle}
-            onPress={() => navigation.navigate('ProfileDrawer')}>
+            onPress={() => navigation.navigate('ProfileDrawer')}
+            >
             <Image style={styles.imageStyle} source={{ uri: user.photoURL }} />
           </TouchableOpacity>
         </View>
