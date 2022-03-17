@@ -15,6 +15,9 @@ import DatePicker from '../src/components/DatePicker';
 import CheckOut from '../src/screens/admin/Checkout';
 import customColor from '../src/assets/colors/customColor';
 
+import Support from '../src/screens/profile/Support';
+
+
 const Stack = createStackNavigator();
 const config = {
   animation: 'spring',
@@ -78,6 +81,7 @@ const ParentNavigator = () => {
 
       <Stack.Screen name="AdminHome" component={AdminTabNavigator} />
       <Stack.Screen name="ProfileDrawer" component={ProfileDrawer} />
+      <Stack.Screen name="Support" component={Support}  />
       <Stack.Screen name="AddItem" component={AddItem} />
       <Stack.Screen name="CollectionScreen" component={CollectionScreen} />
       <Stack.Screen

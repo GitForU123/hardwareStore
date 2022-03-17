@@ -1,8 +1,9 @@
-import React, {useEffect, useState} from 'react';
-import {View, Text, StyleSheet, ScrollView} from 'react-native';
-import {useDispatch, useSelector} from 'react-redux';
+import React, { useEffect, useState } from 'react';
+import { View, Text, StyleSheet, ScrollView } from 'react-native';
+import { useDispatch, useSelector } from 'react-redux';
 
 import ItemList from '../../components/ItemList';
+
 import customColor from '../../assets/colors/customColor';
 import {getDataFromIncomingInventory} from '../../redux/actions/DBAction';
 import Header from '../../components/Header';
@@ -10,6 +11,8 @@ const CollectionScreen = ({route, navigation}) => {
   const {collection} = route?.params;
 
   const {storeData} = useSelector(state => state.DBReducer);
+import { firebase } from '@react-native-firebase/firestore';
+
   const [uniqueCollection, setUniqueCollection] = useState([]);
 
   const dispatch = useDispatch();
@@ -58,20 +61,32 @@ const CollectionScreen = ({route, navigation}) => {
           );
         })}
       </View>
+
     </ScrollView>
   );
 };
 
 const styles = StyleSheet.create({
+  itemWrapper: {
+
+    backgroundColor: "#EEE8AA",
+
+
+
+  },
+  itemStyle: {
+    flexDirection: 'column',
+    paddingLeft: 10,
+  },
   heading: {
     textAlign: 'center',
-    fontSize: 20,
+    fontSize: 30,
     fontFamily: 'Montserrat-Medium',
     paddingVertical: 5,
     color: customColor.primaryColor,
   },
   titleHeader: {
-    fontSize: 16,
+    fontSize: 20,
     fontWeight: 'bold',
     color: 'steelblue',
     marginLeft: 15,

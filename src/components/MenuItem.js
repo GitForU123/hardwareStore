@@ -1,9 +1,9 @@
-import {useNavigation} from '@react-navigation/native';
+import { useNavigation } from '@react-navigation/native';
 import React from 'react';
-import {StyleSheet, View, Text, TouchableOpacity, Image} from 'react-native';
+import { StyleSheet, View, Text, TouchableOpacity, Image } from 'react-native';
 import customColor from '../assets/colors/customColor';
 
-const MenuItem = ({title}) => {
+const MenuItem = ({ title }) => {
   const navigation = useNavigation();
   const imageSrcHandler = title => {
     switch (title) {
@@ -35,13 +35,21 @@ const MenuItem = ({title}) => {
 
 const styles = StyleSheet.create({
   container: {
-    backgroundColor: customColor.primaryColor,
 
-    margin: 5,
+
+
+    backgroundColor: "#EEE8AA",
+    // borderWidth: 1,
+    // borderColor: 'yellow',
+    margin: 10,
+
+
     paddingHorizontal: 10,
-
-    height: 120,
-    borderRadius: 5,
+    //width: '40%',
+    height: 220,
+    borderRadius: 10,
+    // borderBottomColor: customColor.lightgrey,
+    // borderRightColor: customColor.lightgrey,
 
     borderWidth: 2,
     shadowOffset: {
@@ -53,15 +61,15 @@ const styles = StyleSheet.create({
     shadowOpacity: 1,
   },
   imageStyle: {
-    height: 80,
-    width: 100,
+    height: 170,
+    width: 145,
     marginTop: 5,
   },
   buttonStyles: {
     flex: 1,
   },
   buttonText: {
-    color: customColor.white,
+    color: customColor.black,
     fontSize: 18,
     alignSelf: 'center',
     marginVertical: 5,

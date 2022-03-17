@@ -1,3 +1,4 @@
+
 import React, {useEffect, useState} from 'react';
 import {View, Text, StyleSheet, TouchableOpacity} from 'react-native';
 import {useDispatch} from 'react-redux';
@@ -9,8 +10,17 @@ import UserTab from '../../components/UserTab';
 import MenuItem from '../../components/MenuItem';
 
 import Header from '../../components/Header';
+import Icon from 'react-native-vector-icons/FontAwesome';
+
+import { ActivityIndicator } from 'react-native';
 
 const AdminHome = ({navigation}) => {
+
+
+
+
+const AdminHome = ({ navigation }) => {
+  
   const [uniqueCollection, setUniqueCollection] = useState([]);
 
   const dispatch = useDispatch();
@@ -41,14 +51,21 @@ const AdminHome = ({navigation}) => {
 
   return (
     <View style={styles.container}>
+
       <Header title="Home" nav={navigation} />
 
       <UserTab navigation={navigation} />
+
       <TouchableOpacity
         onPress={() => navigation.navigate('AddItem')}
         style={styles.buttonStyles}>
-        <Text style={styles.buttonText}>GO TO ADDITEM</Text>
+        <Icon name="plus" size={35} color="brown" />
       </TouchableOpacity>
+      {/* <TouchableOpacity
+        onPress={() => navigation.navigate('AddItem')}
+        style={styles.buttonStyles}>
+        <Text style={styles.buttonText}>GO TO ADDITEM</Text>
+      </TouchableOpacity> */}
       <View style={styles.menuWrapper}>
         {uniqueCollection.map(item => {
           return (
@@ -69,13 +86,14 @@ const styles = StyleSheet.create({
   },
   heading: {
     textAlign: 'center',
-    fontSize: 20,
+    fontSize: 30,
     fontFamily: 'Montserrat-Medium',
     paddingVertical: 15,
     color: customColor.primaryColor,
   },
   menuWrapper: {
-    marginTop: 10,
+    marginTop: 30,
+
     flexDirection: 'row',
     justifyContent: 'center',
 
@@ -83,13 +101,20 @@ const styles = StyleSheet.create({
     flexWrap: 'wrap',
   },
   buttonStyles: {
-    backgroundColor: 'black',
 
-    height: 40,
+    position: "absolute",
+    bottom: 0,
+    width: 50,
+    height: 50,
+    borderRadius: 40,
+    marginRight: 15,
+    alignSelf: "flex-end",
 
-    borderRadius: 3,
-    marginHorizontal: 20,
-    paddingBottom: 10,
+
+
+
+
+
   },
   buttonText: {
     color: '#ffffff',

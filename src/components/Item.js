@@ -1,13 +1,13 @@
 import React from 'react';
-import {View, Text, StyleSheet, Image} from 'react-native';
+import { View, Text, StyleSheet, Image } from 'react-native';
 
-const Item = ({item}) => {
+const Item = ({ item }) => {
   // console.log('item', item);
   return (
     <View style={styles.itemWrapper}>
-      <View style={{flexDirection: 'column', flexWrap: 'wrap'}}>
+      <View style={{ flexDirection: 'column', flexWrap: 'wrap' }}>
         <Image
-          source={{uri: 'data:image/jpeg;base64,' + item.itemURL}}
+          source={{ uri: 'data:image/jpeg;base64,' + item.itemURL }}
           resizeMode="cover"
           style={styles.image}
         />
@@ -22,18 +22,21 @@ const Item = ({item}) => {
 
 const styles = StyleSheet.create({
   itemWrapper: {
-    height: 250,
+    marginTop: 5,
+    height: 300,
     width: 150,
 
     borderRadius: 10,
   },
   image: {
-    width: 100,
-    height: 150,
+    width: 150,
+    height: 200,
     borderRadius: 10,
   },
   title: {
-    fontSize: 14,
+    marginTop: 5,
+    fontSize: 16,
+    fontWeight: "bold",
     paddingRight: 16,
     alignSelf: 'flex-start',
     marginVertical: 2,

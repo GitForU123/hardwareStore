@@ -1,4 +1,4 @@
-import React, {useEffect, useState} from 'react';
+import React, { useEffect, useState } from 'react';
 import {
   View,
   Text,
@@ -9,7 +9,7 @@ import {
 } from 'react-native';
 import customColor from '../assets/colors/customColor';
 
-const SoldItem = ({item}) => {
+const SoldItem = ({ item }) => {
   return (
     <View style={styles.itemWrapper}>
       <View style={styles.itemStyle}>
@@ -22,7 +22,7 @@ const SoldItem = ({item}) => {
         </Text>
       </View>
       <Image
-        source={{uri: 'data:image/jpeg;base64,' + item.itemURL}}
+        source={{ uri: 'data:image/jpeg;base64,' + item.itemURL }}
         resizeMode="cover"
         style={styles.image}
       />
@@ -37,13 +37,14 @@ const styles = StyleSheet.create({
   },
   itemWrapper: {
     paddingHorizontal: 10,
+    backgroundColor: "#EEE8AA",
 
     borderRadius: 10,
     flexDirection: 'row',
     justifyContent: 'space-between',
     borderWidth: 1,
     borderColor: customColor.lightgrey,
-    marginBottom: 5,
+    marginBottom: 10,
   },
   itemStyle: {
     flexDirection: 'column',
@@ -52,12 +53,13 @@ const styles = StyleSheet.create({
   image: {
     marginVertical: 10,
     marginHorizontal: 5,
-    width: 100,
-    height: 100,
+    width: 120,
+    height: 120,
     borderRadius: 10,
   },
   textStyle: {
-    fontSize: 16,
+    fontSize: 18,
+    fontWeight: 'bold',
     paddingRight: 16,
     alignSelf: 'flex-start',
     marginVertical: 2,

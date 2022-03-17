@@ -7,7 +7,9 @@ const Drawer = createDrawerNavigator();
 export default function ProfileDrawer() {
   return (
     <Drawer.Navigator>
-      <Drawer.Screen name="Profile" component={Profile} />
+      <Drawer.Screen name="Profile" component={Profile} options={{
+          headerShown: false
+        }}/>
     </Drawer.Navigator>
   );
 }
