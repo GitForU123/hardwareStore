@@ -1,27 +1,22 @@
 import {useNavigation} from '@react-navigation/native';
 import React, {useState} from 'react';
 import {
-  Button,
   View,
   Text,
   TextInput,
   StyleSheet,
   TouchableOpacity,
-  Image,
-  ScrollView,
   ToastAndroid,
 } from 'react-native';
 import {Calendar} from 'react-native-calendars';
 import {useDispatch} from 'react-redux';
 import customColor from '../../assets/colors/customColor';
-import AddImage from '../../components/AddImage';
+
 import {
-  addDataToFireStore,
   addToSoldInventory,
   updateCurrentInventory,
 } from '../../redux/actions/DBAction';
-import Feather from 'react-native-vector-icons/Feather';
-import {firebase} from '@react-native-firebase/firestore';
+import Header from '../../components/Header';
 
 const CheckOut = ({navigation, route}) => {
   const item = route.params?.item;
@@ -32,45 +27,8 @@ const CheckOut = ({navigation, route}) => {
 
   const [count, setCount] = useState('');
 
-  // const [outGoingDate, setOutGoingDate] = useState('');
   const dispatch = useDispatch();
-  // const addData = data => dispatch(addDataToFireStore(data));
-  // const addToOutGoingInventory = data => dispatch(addToSoldInventory(data));
 
-  // setIncomingDate(route.params?.date);
-  // const addDataTo = (collectionName, group, data, itemGroupId) =>
-  //   dispatch(addInventoryData(collectionName, group, data, itemGroupId));
-
-  // const updateCurrentInventory = (id, count) => {
-  //   const ref = firebase.firestore().collection('IncomingInventory');
-
-  //   ref
-  //     .doc(id)
-  //     .get()
-  //     .then(snapshot => {
-  //       const data = snapshot.data();
-  //       console.log(data.count, count);
-  //       if (Number(data.count) > Number(count)) {
-  //         ref.doc(id).update({
-  //           count: Number(data.count) - Number(count),
-  //         });
-  //         navigation.goBack();
-  //       } else {
-  //         ref
-  //           .doc(id)
-  //           .delete()
-  //           .then(
-  //             () => {
-  //               console.log(`successfully deleted`);
-  //               navigation.goBack();
-  //             },
-  //             () => {
-  //               console.log(`some error happened in deleting item`);
-  //             },
-  //           );
-  //       }
-  //     });
-  // };
   const handleonPress = () => {
     const data = {
       itemGroupId,
@@ -78,22 +36,18 @@ const CheckOut = ({navigation, route}) => {
       count,
       itemPrice,
       itemURL: item.itemURL,
-      // outGoingDate: route.params?.datePicked,
-      // outGoingDate: route.params?.outGoingDate,
     };
     if (Number(item.count) >= Number(count)) {
-      // addToOutGoingInventory(data, updateCurrentInventory(itemGroupId, count));
       dispatch(addToSoldInventory(data));
       dispatch(updateCurrentInventory(data.itemGroupId, count));
       navigation.goBack();
     } else {
       ToastAndroid.show(`only ${item.count} item availble`, ToastAndroid.LONG);
-      console.log('not enough item in inventory');
     }
   };
   return (
     <View>
-      <Text style={styles.heading}>CheckOut Item Here</Text>
+      <Header nav={navigation} title="CheckOut" />
 
       <TextInput
         style={[styles.input]}
@@ -115,19 +69,6 @@ const CheckOut = ({navigation, route}) => {
         value={count}
       />
 
-      {/* <View style={styles.dateInputWrapper}>
-        <TextInput
-          style={{flex: 1, backgroundColor: '#fff'}}
-          placeholder="Pick OutGoing Date  format(yyyy-mm-dd)"
-          // onChangeText={newText => setOutGoingDate(newText)}
-          value={route.params?.datePicked}
-        />
-        <TouchableOpacity
-          style={styles.iconStyle}
-          onPress={() => navigation.navigate('Calendar', {screen: 'CheckOut'})}>
-          <Feather name="calendar" size={25} color={customColor.primaryColor} />
-        </TouchableOpacity>
-      </View> */}
       <Text>
         Total Price : {`${itemPrice} x ${count}`} =
         {Number(itemPrice) * Number(count)}
@@ -192,7 +133,6 @@ const styles = StyleSheet.create({
   iconStyle: {
     alignSelf: 'center',
     paddingRight: 5,
-    // backgroundColor: '#fff',
   },
 });
 export default CheckOut;

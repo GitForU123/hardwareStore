@@ -1,4 +1,3 @@
-import database from '@react-native-firebase/database';
 import {firebase} from '@react-native-firebase/firestore';
 
 export const GET_DATA = 'GET_DATA';
@@ -12,105 +11,6 @@ export const UPDATE_INVENTORY = 'UPDATE_INVENTORY';
 export const DELETE_INVENTORY = 'DELETE_INVENTORY';
 export const GET_LIST = 'GET_LIST';
 
-// export const getInventoryData = (collection, groupName) => {
-//   return async dispatch => {
-//     firebase
-//       .firestore()
-//       .collection(collection)
-//       .doc(groupName)
-//       .get()
-//       .then(snapshot => {
-//         console.log('collectedSnap', snapshot);
-//         const collectionData = snapshot.data();
-//         // console.log('collectedData', collectionData);
-//         // setFruitList(collectionData)
-//         dispatch({
-//           type: GET_DATA,
-//           payload: collectionData,
-//           groupName,
-//         });
-//       });
-//     // const itemRef = database().ref('/user');
-//     // itemRef.on('value', snapshot => {
-//     //   const data = snapshot.val();
-//     //   const itemData = Object.values(data);
-
-//     // });
-//   };
-// };
-// export const getInventoryList = () => {
-//   return async dispatch => {
-//     firebase
-//       .firestore()
-//       .collection('Inventory')
-//       .get().then(snapshot => {
-//         const collectionData = snapshot.docs.map(item => item.data());
-//         // console.log('collectedData', collectionData);
-//         // setFruitList(collectionData)
-//         dispatch({
-//           type: GET_DATA,
-//           payload: collectionData,
-//         });
-//       });
-//   };
-// };
-
-// export const addInventoryData = (collectionName, groupName, data, itemId) => {
-//   return async dispatch => {
-//     firebase
-//       .firestore()
-
-//       .doc(`Inventory/${collectionName}`)
-//       .collection(groupName)
-//       .doc(itemId)
-//       .set(data)
-//       .then(
-//         () => {
-//           dispatch({type: ADD_DATA});
-//         },
-//         error => {
-//           console.log('some error happened', error);
-//         },
-//       );
-//   };
-// };
-// export const addDataToFireStore = (collectionName, groupName, data) => {
-//   return async dispatch => {
-//     firebase
-//       .firestore()
-
-//       .collection(`${collectionName}`)
-//       .doc(groupName)
-//       .set(data)
-//       .then(
-//         () => {
-//           dispatch({type: ADD_DATA});
-//         },
-//         error => {
-//           console.log('some error happened', error);
-//         },
-//       );
-//   };
-// };
-// export const addDataToFireStore = data => {
-//   return async dispatch => {
-//     firebase
-//       .firestore()
-
-//       .collection('Inventory')
-//       .doc(`${data.itemId}`)
-
-//       .set(data)
-//       .then(
-//         () => {
-//           dispatch({type: ADD_DATA});
-//         },
-//         error => {
-//           console.log('some error happened', error);
-//         },
-//       );
-//   };
-// };
 export const getDataFromIncomingInventory = getCollection => {
   return async dispatch => {
     firebase
@@ -119,7 +19,6 @@ export const getDataFromIncomingInventory = getCollection => {
       .get()
       .then(
         snapshot => {
-          // console.log('SnapShot', snapshot.docs);
           const data = snapshot.docs.map(doc => doc.data());
           dispatch({type: GET_DATA_FROM_INVENTORY, payload: data});
           getCollection(snapshot.docs.map(doc => doc.data()));
@@ -151,7 +50,6 @@ export const addDataToIncomingInventory = data => {
             payload: {id: data.itemGroupId, count: data.count},
           });
         } else {
-          // console.log('doc not fount adding to new');
           refFireStoreDoc
             .doc(`${data.itemGroupId}`)
             .set(data)
@@ -177,7 +75,7 @@ export const updateCurrentInventory = (id, count) => {
       .get()
       .then(snapshot => {
         const data = snapshot.data();
-        console.log(data.count, count);
+
         if (Number(data.count) > Number(count)) {
           ref.doc(id).update({
             count: Number(data.count) - Number(count),
@@ -185,7 +83,6 @@ export const updateCurrentInventory = (id, count) => {
 
           // Add update dispatch
           dispatch({type: UPDATE_INVENTORY, payload: {id, count}});
-          // navigation.goBack();
         } else {
           ref
             .doc(id)
@@ -194,7 +91,6 @@ export const updateCurrentInventory = (id, count) => {
               () => {
                 dispatch({type: DELETE_INVENTORY, payload: id});
                 console.log(`successfully deleted`);
-                // navigation.goBack();
               },
               () => {
                 console.log(`some error happened in deleting item`);
@@ -222,7 +118,6 @@ export const addToSoldInventory = data => {
             count: Number(data.count) + Number(snapshot.data().count),
           });
           dispatch({type: UPDATE_SOLD_INVENTORY, payload: data});
-          // updateInventory(data.itemGroupId, data.count);
         } else {
           console.log('item group not sold yet');
           refToSoldInventory
@@ -231,7 +126,6 @@ export const addToSoldInventory = data => {
             .then(
               () => {
                 dispatch({type: ADD_TO_SOLD_INVENTORY, payload: data});
-                // updateInventory(data.itemGroupId, data.count);
               },
               error => {
                 console.log('some error happened', error);

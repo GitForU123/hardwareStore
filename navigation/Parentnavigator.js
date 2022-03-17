@@ -1,6 +1,6 @@
 import {createStackNavigator, TransitionSpecs} from '@react-navigation/stack';
 import React, {useState} from 'react';
-import useAuth from '../src/hooks/useAuth';
+import {StyleSheet} from 'react-native';
 
 import ForgotPasswordScreen from '../src/screens/authentication/ForgotPassword';
 import LogIn from '../src/screens/authentication/Login';
@@ -13,6 +13,7 @@ import AddItem from '../src/screens/admin/AddItem';
 import CollectionScreen from '../src/screens/admin/CollectionScreen';
 import DatePicker from '../src/components/DatePicker';
 import CheckOut from '../src/screens/admin/Checkout';
+import customColor from '../src/assets/colors/customColor';
 
 const Stack = createStackNavigator();
 const config = {
@@ -40,9 +41,17 @@ const ParentNavigator = () => {
   });
   return (
     <Stack.Navigator
-      initialRouteName="AdminHome"
+      initialRouteName="Welcome"
       screenOptions={{
         headerShown: false,
+        headerStyle: {
+          backgroundColor: customColor.primaryColor,
+        },
+        headerTintColor: customColor.white,
+        headerTitleStyle: {
+          color: customColor.white,
+        },
+
         gestureEnabled: true,
         gestureDirection: 'horizontal',
         transitionSpec: {
@@ -83,5 +92,11 @@ const ParentNavigator = () => {
     </Stack.Navigator>
   );
 };
+
+const styles = StyleSheet.create({
+  header: {},
+  headerBar: {},
+  headerTitle: {},
+});
 
 export default ParentNavigator;
