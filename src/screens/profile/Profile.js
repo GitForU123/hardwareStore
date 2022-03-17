@@ -25,6 +25,7 @@ import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
 import {connect} from 'react-redux';
 import { TabActions } from '@react-navigation/native';
 import useAuth from '../../hooks/useAuth';
+import Header from '../../components/Header';
 
 
 export default function Profile({navigation,props}) {
@@ -61,6 +62,7 @@ export default function Profile({navigation,props}) {
         </View>
       ) : (
         <>
+         <Header title="Profile" nav={navigation} />
           <View style={styles.userInfoSection}>
             <View style={{flexDirection: 'column', marginTop: 15, alignItems:'center'}}>
               <Image
