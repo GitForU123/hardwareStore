@@ -1,64 +1,28 @@
-import React, { useEffect, useState } from 'react';
-import {
-  View,
-  Text,
-  Button,
-  FlatList,
-  StyleSheet,
-  Image,
-  TouchableOpacity,
-} from 'react-native';
-import Icon from 'react-native-vector-icons/FontAwesome';
-import { useDispatch, useSelector } from 'react-redux';
-import {
-  getCollectionList,
-  getDataFromIncomingInventory,
-  getInventoryData,
-  getInventoryList,
-} from '../../redux/actions/DBAction';
-import database from '@react-native-firebase/database';
+
+import React, {useEffect, useState} from 'react';
+import {View, Text, StyleSheet, TouchableOpacity} from 'react-native';
+import {useDispatch} from 'react-redux';
+import {getDataFromIncomingInventory} from '../../redux/actions/DBAction';
 
 import customColor from '../../assets/colors/customColor';
 import UserTab from '../../components/UserTab';
-import ItemList from '../../components/ItemList';
-import { firebase, doc, setDocs } from '@react-native-firebase/firestore';
-import useAuth from '../../hooks/useAuth';
+
 import MenuItem from '../../components/MenuItem';
-import { ActivityIndicator } from 'react-native';
+
 import Header from '../../components/Header';
+import Icon from 'react-native-vector-icons/FontAwesome';
+
+import { ActivityIndicator } from 'react-native';
+
+const AdminHome = ({navigation}) => {
+
+
+
 
 const AdminHome = ({ navigation }) => {
-  // const {storeData} = useSelector(state => state.DBReducer);
-  // const [data, setData] = useState([]);
-  // const {data, getData} = useAuth();
-
+  
   const [uniqueCollection, setUniqueCollection] = useState([]);
-  // const {getListData, collectionData} = useAuth();
-  // console.log(collectionData);
-  // console.log('StoreData', storeData);
-  // console.log('ListData', collectionList);
-  // console.log('DATA', storeData);
-  // const handleLoader = () => {
-  //   setTimeout(() => {
-  //     setLoading(true);
 
-  //     // navigation.navigate('Home1')
-  //   }, 1000);
-
-  //   setLoading(false);
-  // };
-  // const getCategoryCollection = () => {
-  //   firebase
-  //     .firestore()
-  //     .collection('Inventory')
-  //     .get()
-  //     .then(snapshot => {
-  //       // console.log('collectedSnap', snapshot);
-  //       const collectionData = snapshot.docs.map(item => item.data());
-  //       setData(collectionData);
-  //       filterList(collectionData);
-  //     });
-  // };
   const dispatch = useDispatch();
   const fetchData = () => dispatch(getDataFromIncomingInventory(filterList));
   const filterList = comingData => {
@@ -69,62 +33,29 @@ const AdminHome = ({ navigation }) => {
       }
       let arr = [];
       set.forEach(value => {
-        // console.log(value);
         arr.push(value);
       });
       setUniqueCollection(arr);
     } else {
-      // filterList(data);
       console.log('data not availble');
     }
   };
-  // const fetchData = () => {
-  //   dispatch(getInventoryList());
 
-  // };
-
-  // const onResult = querySnap => {
-  //   console.log('querySnapResult', querySnap);
-  //   const size = querySnap.size;
-  //   console.log('querySnapData', size);
-  // };
-  // const onError = () => {
-  //   console.log('some Error on querySnap');
-  // };
   useEffect(() => {
-    // const unsubscribe = getData(filterList);
-    // return () => {
-    //   unsubscribe();
-    // };
     const listener = navigation.addListener('focus', () => {
       fetchData();
     });
 
     return () => listener.remove();
-    // fetchData('Stationary', 'Pen');
-    // handleLoader();
-    // fetchData(filterListCallback);
-    // getCategoryCollection();
-    // getListData('Stationary', 'Pen');
-    // fetchData('Stationary', 'Pen');
-    // fetchList();
-    // firebase
-    //   .firestore()
-    //   .collection('Items')
-    //   .get()
-    //   .then(onResult, onError);
   }, [navigation]);
 
-  // const handleOut = () => {
-  //   handleSignOut();
-  //   navigation.replace('Register');
-
-  // };
-  // if (storeData.length) {
   return (
     <View style={styles.container}>
-      <Text style={styles.heading}>Dashboard </Text>
-      <UserTab />
+
+      <Header title="Home" nav={navigation} />
+
+      <UserTab navigation={navigation} />
+
       <TouchableOpacity
         onPress={() => navigation.navigate('AddItem')}
         style={styles.buttonStyles}>
@@ -146,13 +77,6 @@ const AdminHome = ({ navigation }) => {
       </View>
     </View>
   );
-  // } else {
-  //   return (
-  //     <View>
-  //       <Text>Fetching...</Text>
-  //     </View>
-  //   );
-  // }
 };
 
 const styles = StyleSheet.create({
@@ -172,8 +96,7 @@ const styles = StyleSheet.create({
 
     flexDirection: 'row',
     justifyContent: 'center',
-    // backgroundColor: 'black',
-    // borderWidth: 2,
+
     borderColor: 'red',
     flexWrap: 'wrap',
   },

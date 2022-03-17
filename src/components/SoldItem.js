@@ -3,9 +3,9 @@ import {
   View,
   Text,
   StyleSheet,
-  FlatList,
+
   Image,
-  SafeAreaView,
+  
 } from 'react-native';
 import customColor from '../assets/colors/customColor';
 
@@ -16,9 +16,6 @@ const SoldItem = ({ item }) => {
         <Text style={styles.textStyle}>itemGroupId : {item.itemGroupId}</Text>
         <Text style={styles.textStyle}>itemName : {item.itemName}</Text>
 
-        {/* <Text style={styles.textStyle}>
-                  OutGoing Date : {item.outGoingDate}
-                </Text> */}
         <Text style={styles.textStyle}>Count : {item.count}</Text>
         <Text style={styles.textStyle}>
           Total Price : {Number(item.count) * Number(item.itemPrice)}
@@ -42,9 +39,6 @@ const styles = StyleSheet.create({
     paddingHorizontal: 10,
     backgroundColor: "#EEE8AA",
 
-    // borderWidth: 1,
-    // borderColor: 'steelblue',
-    // backgroundColor: 'beige',
     borderRadius: 10,
     flexDirection: 'row',
     justifyContent: 'space-between',
@@ -62,7 +56,6 @@ const styles = StyleSheet.create({
     width: 120,
     height: 120,
     borderRadius: 10,
-    // marginHorizontal: 5,
   },
   textStyle: {
     fontSize: 18,
@@ -71,7 +64,6 @@ const styles = StyleSheet.create({
     alignSelf: 'flex-start',
     marginVertical: 2,
     paddingBottom: 5,
-    // marginHorizontal: 5,
   },
 });
 export default SoldItem;

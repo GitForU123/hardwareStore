@@ -1,63 +1,44 @@
-import {useNavigation} from '@react-navigation/native';
-import React, {useState} from 'react';
+import React, {useState, useEffect} from 'react';
 import {
-  Button,
   View,
   Text,
-  TextInput,
   StyleSheet,
   TouchableOpacity,
   Image,
   ScrollView,
 } from 'react-native';
-import {Calendar} from 'react-native-calendars';
+
 import {useDispatch} from 'react-redux';
 import customColor from '../../assets/colors/customColor';
 import AddImage from '../../components/AddImage';
 
-import Feather from 'react-native-vector-icons/Feather';
 import {addDataToIncomingInventory} from '../../redux/actions/DBAction';
 import {firebase} from '@react-native-firebase/firestore';
-// import DropDownPicker from 'react-native-dropdown-picker';
 import DropDown from 'react-native-paper-dropdown';
-import categoryListData from '../../data/categoryListData';
-import categoryToGroup from '../../data/categoryToGroup';
 import {useTheme, TextInput as PaperTextInput} from 'react-native-paper';
+import Header from '../../components/Header';
+import database from '@react-native-firebase/database';
+
 const AddItem = ({navigation, route, theme}) => {
   const [itemName, setItemName] = useState('');
   const [itemGroupId, setItemGroupId] = useState('');
-  const [itemCategory, setItemCategory] = useState('');
+  const [itemCategory, setItemCategory] = useState('default');
   const [itemGroup, setItemGroup] = useState('');
   const [itemPrice, setItemPrice] = useState('');
   const [itemURL, setItemURL] = useState('');
   const [count, setCount] = useState('');
-  const [incomingDate, setIncomingDate] = useState();
 
   const [showDropDown, setShowDropDown] = useState(false);
   const [showGroupDropDown, setShowGroupDropDown] = useState(false);
-  // const [categoryListData, setCategoryListData] = useState([
-  //   {
-  //     label: 'Stationary',
-  //     value: 'Stationary',
-  //   },
-  //   {
-  //     label: 'Mobile',
-  //     value: 'Mobile',
-  //   },
-  //   {
-  //     label: 'Electronics',
-  //     value: 'Electronics',
-  //   },
-  // ]);
-  // console.log(incomingDate, route.params?.datePicked);
+  const [categoryArray, setCategoryArray] = useState([]);
+  const [categoryToGroupArray, setCategoryToGroupArray] = useState({
+    default: [],
+  });
+
   const dispatch = useDispatch();
-  // const addData = data => dispatch(addDataToFireStore(data));
   const addToIncomingInventory = data =>
     dispatch(addDataToIncomingInventory(data));
 
-  // setIncomingDate(route.params?.date);
-  // const addDataTo = (collectionName, group, data, itemGroupId) =>
-  //   dispatch(addInventoryData(collectionName, group, data, itemGroupId));
   const handleonPress = () => {
     const data = {
       itemCategory,
@@ -68,8 +49,6 @@ const AddItem = ({navigation, route, theme}) => {
       count,
       itemPrice,
       itemURL,
-      // incomingDate: route.params?.datePicked,
-      // outGoingDate: route.params?.outGoingDate,
     };
 
     addToIncomingInventory(data);
@@ -94,11 +73,39 @@ const AddItem = ({navigation, route, theme}) => {
       });
   };
 
+  const groupRef = database().ref('group');
+  const onGroupChange = snapshot => {
+    const data = snapshot.val();
+   
+
+    setCategoryToGroupArray(data);
+  };
+
+  const categoryRef = database().ref('catogory');
+  const onValueChange = snapshot => {
+    const data = snapshot.val();
+
+    const items = Object.values(data);
+
+    setCategoryArray(items);
+  };
+
+  useEffect(() => {
+    categoryRef.on('value', onValueChange);
+    groupRef.on('value', onGroupChange);
+
+    return () => {
+      categoryRef.off('value', onValueChange);
+      groupRef.off('value', onGroupChange);
+    }; // clean up code after componentWillUnmount
+  }, []);
+
   const paperTheme = useTheme();
-  // const paperTheme = theme;
+ 
   return (
     <ScrollView>
-      <Text style={styles.heading}>Add Item Here</Text>
+      <Header nav={navigation} title="Add Item" />
+
       <Image
         source={
           itemURL.length === 0
@@ -115,16 +122,8 @@ const AddItem = ({navigation, route, theme}) => {
         theme={paperTheme}
         style={styles.paperInput}
         onEndEditing={() => checkItemExists(itemGroupId)}
-
-        // style={styles.paperInput}
       />
-      {/* <TextInput
-        style={[styles.input]}
-        label="ItemGroupId"
-        onChangeText={newText => setItemGroupId(newText)}
-        value={itemGroupId}
-        onEndEditing={() => checkItemExists(itemGroupId)}
-      /> */}
+
       <View style={styles.dropDownWrapper}>
         <DropDown
           label="Categories"
@@ -134,7 +133,7 @@ const AddItem = ({navigation, route, theme}) => {
           onDismiss={() => setShowDropDown(false)}
           value={itemCategory}
           setValue={setItemCategory}
-          list={categoryListData}
+          list={categoryArray}
         />
       </View>
       <View style={styles.dropDownWrapper}>
@@ -146,32 +145,11 @@ const AddItem = ({navigation, route, theme}) => {
           onDismiss={() => setShowGroupDropDown(false)}
           value={itemGroup}
           setValue={setItemGroup}
-          list={categoryToGroup[`${itemCategory}`]}
+          list={categoryToGroupArray[`${itemCategory}`]}
           theme={paperTheme}
         />
       </View>
-      {/* <DropDownPicker
-        open={showDropDown}
-        setOpen={setShowDropDown}
-        value={itemCategory}
-        setValue={setItemCategory}
-        items={categoryListData}
-        setItems={setCategoryListData}
-      /> */}
 
-      {/* <TextInput
-        style={[styles.input]}
-        label="Item Category"
-        onChangeText={newText => setItemCategory(newText)}
-        value={itemCategory}
-      /> */}
-      {/* 
-      <TextInput
-        style={[styles.input]}
-        label="Item Group"
-        onChangeText={newText => setItemGroup(newText)}
-        value={itemGroup}
-      /> */}
       <PaperTextInput
         mode="outlined"
         label="Name"
@@ -179,15 +157,7 @@ const AddItem = ({navigation, route, theme}) => {
         onChangeText={text => setItemName(text)}
         theme={paperTheme}
         style={styles.paperInput}
-
-        // style={styles.paperInput}
       />
-      {/* <TextInput
-        style={[styles.input]}
-        label="Item Name"
-        onChangeText={newText => setItemName(newText)}
-        value={itemName}
-      /> */}
 
       <PaperTextInput
         mode="outlined"
@@ -196,15 +166,8 @@ const AddItem = ({navigation, route, theme}) => {
         value={count}
         theme={paperTheme}
         style={styles.paperInput}
-
-        // style={styles.paperInput}
       />
-      {/* <TextInput
-        style={[styles.input]}
-        label="Item Count"
-        onChangeText={newText => setCount(newText)}
-        value={count}
-      /> */}
+
       <AddImage setURL={setItemURL} />
       <PaperTextInput
         mode="outlined"
@@ -213,43 +176,7 @@ const AddItem = ({navigation, route, theme}) => {
         value={itemPrice}
         theme={paperTheme}
         style={styles.paperInput}
-
-        // style={styles.paperInput}
       />
-      {/* <TextInput
-        style={[styles.input]}
-        label="Item Price"
-        onChangeText={newText => setItemPrice(newText)}
-        value={itemPrice}
-      /> */}
-      {/* <View style={styles.dateInputWrapper}>
-        <TextInput
-          style={{flex: 1, backgroundColor: '#fff'}}
-          label="Pick Incoming Date format(yyyy-mm-dd)"
-          onChangeText={newText => setIncomingDate(newText)}
-          value={route.params?.datePicked}
-        />
-        <TouchableOpacity
-          style={styles.iconStyle}
-          onPress={() => navigation.navigate('Calendar', {screen: 'AddItem'})}>
-          <Feather name="calendar" size={25} color={customColor.primaryColor} />
-        </TouchableOpacity>
-      </View> */}
-      {/* <View style={styles.dateInputWrapper}>
-        <TextInput
-          style={{flex: 1, backgroundColor: '#fff'}}
-          label="Pick OutGoing Date  format(yyyy-mm-dd)"
-          // onChangeText={newText => setOutGoingDate(newText)}
-          value={route.params?.outGoingDate}
-        />
-        <TouchableOpacity
-          style={styles.iconStyle}
-          onPress={() =>
-            navigation.navigate('Calendar', {name: 'fromOutGoing'})
-          }>
-          <Feather name="calendar" size={25} color={customColor.primaryColor} />
-        </TouchableOpacity>
-      </View> */}
 
       <TouchableOpacity style={styles.button} onPress={() => handleonPress()}>
         <Text style={styles.buttontext}>Add Item</Text>
@@ -284,7 +211,6 @@ const styles = StyleSheet.create({
     marginHorizontal: 10,
     marginBottom: 5,
     fontSize: 16,
-    // height: 50,
   },
   input: {
     margin: 8,
@@ -308,7 +234,7 @@ const styles = StyleSheet.create({
   },
   buttontext: {
     paddingVertical: 5,
-    textAlign: 'center', // <-- the magic
+    textAlign: 'center',
     fontWeight: 'bold',
     fontSize: 18,
 
@@ -331,7 +257,6 @@ const styles = StyleSheet.create({
   iconStyle: {
     alignSelf: 'center',
     paddingRight: 5,
-    // backgroundColor: '#fff',
   },
 });
 export default AddItem;

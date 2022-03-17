@@ -1,5 +1,5 @@
 export default {
-  '': [],
+  default: [],
   Stationary: [
     {
       label: 'Pen',
