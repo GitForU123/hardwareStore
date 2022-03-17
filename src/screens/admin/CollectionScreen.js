@@ -42,9 +42,11 @@ const CollectionScreen = ({route, navigation}) => {
   }, []);
 
   return (
-    <ScrollView>
-      <Header nav={navigation} title="Collection" />
+    <>
+     <Header nav={navigation} title="Collection" />
 
+    <ScrollView>
+     
       <View>
         {uniqueCollection.map(item => {
           return (
@@ -63,6 +65,7 @@ const CollectionScreen = ({route, navigation}) => {
       </View>
 
     </ScrollView>
+<>
   );
 };
 
