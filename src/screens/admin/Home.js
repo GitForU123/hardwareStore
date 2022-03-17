@@ -12,9 +12,7 @@ import MenuItem from '../../components/MenuItem';
 import Header from '../../components/Header';
 import Icon from 'react-native-vector-icons/FontAwesome';
 
-import { ActivityIndicator } from 'react-native';
 
-const AdminHome = ({navigation}) => {
 
 
 
