@@ -11,7 +11,7 @@ const CollectionScreen = ({route, navigation}) => {
   const {collection} = route?.params;
 
   const {storeData} = useSelector(state => state.DBReducer);
-import { firebase } from '@react-native-firebase/firestore';
+
 
   const [uniqueCollection, setUniqueCollection] = useState([]);
 
