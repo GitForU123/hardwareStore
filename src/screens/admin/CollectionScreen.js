@@ -65,7 +65,7 @@ const CollectionScreen = ({route, navigation}) => {
       </View>
 
     </ScrollView>
-<>
+</>
   );
 };
 
