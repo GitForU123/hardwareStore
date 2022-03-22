@@ -1,67 +1,25 @@
-import React, {useState, useEffect} from 'react';
-import {
-  View,
-  Text,
-  ImageBackground,
-  StatusBar,
-  StyleSheet,
-  Button,
-} from 'react-native';
-import auth, {firebase} from '@react-native-firebase/auth';
-import useAuth from '../../hooks/useAuth';
-import {GoogleSignin} from '@react-native-google-signin/google-signin';
-import AsyncStorage from '@react-native-async-storage/async-storage';
+import React from 'react';
+import {View, Text, Image, StatusBar, StyleSheet} from 'react-native';
+import customColor from '../../assets/colors/customColor';
 
 const WelcomeScreen = ({navigation}) => {
-  // const [logged, setLogged] = useState(false);
-  const {user} = useAuth();
-  // console.log(user);
-
-  useEffect(() => {
-    // auth().onAuthStateChanged(function onAuthStateChanged(user) {
-    //   console.log('userDAtafromwelcom', user);
-    //   handleScreenTransition(user);
-    // });
-  }, []);
-
-  // const handleScreenTransition = user => {
   setTimeout(function () {
-    // const isSignedIn = GoogleSignin.isSignedIn();
-    let currentUser;
-    AsyncStorage.getItem('isUserSignedIn').then(res => {
-      currentUser = res;
-    });
-    console.log('useridfromWelcome', user);
-    if (currentUser) {
-      navigation.replace('AdminHome');
-    } else {
-      navigation.replace('Register');
-
-
-      // setLogged(true);
-    }
+    navigation.replace('Register');
   }, 2000);
-  // };
 
   function renderHeader() {
     return (
-      <View
-        style={{
-          flex: 1,
-        }}>
-        <ImageBackground
-          source={{
-            uri: 'https://img.etimg.com/thumb/msid-75214721,width-1200,height-900/industry/services/retail/future-group-negotiates-rents-for-its-1700-stores.jpg',
-          }}
-          style={styles.imageBackground}></ImageBackground>
-        {/* <Button
-              title='Login'
-              buttonContainerStyle={{
-              paddingVertical: 18,
-              borderRadius: 20,
-            }}
-            onPress={() => navigation.navigate('LogIn')}
-          /> */}
+      <View style={styles.container}>
+        <View style={styles.textWrapper}>
+          <Text style={styles.textStyle}>WELCOME</Text>
+          <Text style={styles.textStyle}>TO</Text>
+          <Text style={styles.textStyle}>MYHARDWARE</Text>
+        </View>
+        <View style={styles.imageContainer}>
+          <Image
+            source={require('../../assets/images/splash.jpg')}
+            style={styles.imageBackground}></Image>
+        </View>
       </View>
     );
   }
@@ -70,7 +28,6 @@ const WelcomeScreen = ({navigation}) => {
     <View
       style={{
         flex: 1,
-        backgroundColor: 'black',
       }}>
       <StatusBar barStyle="light-content" />
 
@@ -81,24 +38,33 @@ const WelcomeScreen = ({navigation}) => {
 };
 
 export const styles = StyleSheet.create({
+  container: {
+    flex: 1,
+    backgroundColor: customColor.white,
+  },
   imageContainer: {
-    height: '100%',
+    height: '50%',
     width: '80%',
+    marginTop: 20,
+    marginHorizontal: 30,
+    borderWidth: 1,
+    borderRadius: 4,
+    borderColor: customColor.primaryColor,
   },
   imageBackground: {
-    flex: 1,
-    justifyContent: 'flex-end',
-    paddingLeft: 10,
+    height: '100%',
+    width: '100%',
   },
-  headingText: {
-    width: '80%',
-    color: 'white',
-    lineHeight: 45,
+  textWrapper: {
+    marginTop: 20,
+    flex: 0.5,
+    justifyContent: 'center',
+    alignItems: 'center',
   },
-  description: {
-    marginTop: 12,
-    width: '70%',
-    color: 'grey',
+  textStyle: {
+    fontFamily: 'Montserrat-Bold',
+    fontSize: 20,
+    color: customColor.primaryColor,
   },
 });
 

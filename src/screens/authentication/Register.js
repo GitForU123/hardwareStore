@@ -4,9 +4,7 @@ import {
   Text,
   StyleSheet,
   TextInput,
-  TouchableHighlight,
   TouchableOpacity,
-  ImageBackground,
   ToastAndroid,
 } from 'react-native';
 import firestore from '@react-native-firebase/firestore';
@@ -14,14 +12,20 @@ import {SafeAreaView} from 'react-native-safe-area-context';
 import Feather from 'react-native-vector-icons/Feather';
 import customColor from '../../../src/assets/colors/customColor';
 import auth from '@react-native-firebase/auth';
+import Header from '../../components/Header';
+import OverlayLoadingSpinner from '../../components/OverlayLoadingSpinner';
 
 const Register = ({navigation}) => {
   const [username, setUserName] = useState('');
   const [userEmail, setuserEmail] = useState('');
   const [password, setPassword] = useState('');
+
   const [phone, setPhone] = useState();
   const [city, setCity] = useState('Please update address');
   const [address, setAddress] = useState(' ');
+
+  const [loading, setLoading] = useState(false);
+
 
   const [isPasswordShow, setIsPasswordShow] = useState(false);
 
@@ -41,6 +45,7 @@ const Register = ({navigation}) => {
   };
   const handleRegister = async () => {
     if (validateData(username, userEmail, password)) {
+
       await auth()
         .createUserWithEmailAndPassword(userEmail, password)
         .then(async() => {
@@ -60,29 +65,29 @@ const Register = ({navigation}) => {
             });  
           // navigation.navigate('LogIn');
           navigation.replace('LogIn');
+
         })
         .catch(error => {
           console.log(`errorcode : ${error.code} and error : ${error}`);
+          setLoading(false);
           ToastAndroid.show(`${error}`, ToastAndroid.LONG);
         });
     }
   };
   return (
     <SafeAreaView style={styles.container}>
-      <ImageBackground
-        style={{flex: 1}}
-        source={require('../../../src/assets/images/background.png')}>
-        <View>
-          <Text style={styles.heading}>Create Your Account</Text>
-          <View style={styles.inputWrapper}>
-            <Feather name="user" style={styles.iconStyle} />
-            <TextInput
-              style={styles.inputs}
-              onChangeText={text => setUserName(text)}
-              value={username}
-              placeholder="Enter Your Name"
-            />
-          </View>
+
+      <View>
+        <Header nav={navigation} title="Register" />
+        <Text style={styles.heading}>Create Your Account</Text>
+        <View style={styles.inputWrapper}>
+          <Feather name="user" style={styles.iconStyle} />
+          <TextInput
+            style={styles.inputs}
+            onChangeText={text => setUserName(text)}
+            value={username}
+            placeholder="Enter Your Name"
+          />
 
           <View style={styles.inputWrapper}>
             <Feather name="mail" style={styles.iconStyle} />
@@ -121,24 +126,30 @@ const Register = ({navigation}) => {
               onPress={() => setIsPasswordShow(!isPasswordShow)}
             />
           </View>
-        </View>
-        <View style={styles.buttonRow}>
-          <TouchableOpacity
-            style={styles.buttonStyles}
-            onPress={() => handleRegister()}>
-            <Text style={styles.buttonText}>REGISTER</Text>
-          </TouchableOpacity>
-          <TouchableOpacity style={styles.buttonStyles}>
-            <Text style={styles.buttonText}>CANCEL</Text>
-          </TouchableOpacity>
-        </View>
-        <View style={styles.accountWrapper}>
-          <Text>Already have a account?</Text>
-          <TouchableOpacity onPress={() => navigation.navigate('LogIn')}>
-            <Text style={styles.textButton}>LogIn</Text>
-          </TouchableOpacity>
-        </View>
-      </ImageBackground>
+
+
+     
+
+       
+      
+      </View>
+      <View style={styles.buttonRow}>
+        <TouchableOpacity
+          style={styles.buttonStyles}
+          onPress={() => handleRegister()}>
+          <Text style={styles.buttonText}>REGISTER</Text>
+        </TouchableOpacity>
+        <TouchableOpacity style={styles.buttonStyles}>
+          <Text style={styles.buttonText}>CANCEL</Text>
+        </TouchableOpacity>
+      </View>
+      <View style={styles.accountWrapper}>
+        <Text>Already have a account?</Text>
+        <TouchableOpacity onPress={() => navigation.navigate('LogIn')}>
+          <Text style={styles.textButton}>LogIn</Text>
+        </TouchableOpacity>
+      </View>
+      {loading && <OverlayLoadingSpinner />}
     </SafeAreaView>
   );
 };
@@ -146,7 +157,6 @@ const Register = ({navigation}) => {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    // backgroundColor: 'coral',
   },
   heading: {
     textAlign: 'center',
@@ -160,19 +170,13 @@ const styles = StyleSheet.create({
     height: 50,
     borderRadius: 5,
     borderWidth: 1,
-    borderColor: customColor.blue,
+    borderColor: customColor.primaryColor,
     margin: 8,
   },
   inputs: {
     flex: 1,
     fontSize: 18,
     padding: 5,
-    // color: 'white',
-
-    // borderWidth: 1,
-    // borderColor: 'blue',
-    // borderRadius: 5,
-    // backgroundColor: 'white',
   },
   iconStyle: {
     fontSize: 25,
@@ -182,32 +186,25 @@ const styles = StyleSheet.create({
 
   buttonRow: {
     flexDirection: 'row',
-    // borderColor: 'black',
-    // borderWidth: 2,
-    // backgroundColor: 'yellow',
+
     height: 50,
     marginVertical: 20,
     alignItems: 'center',
     justifyContent: 'center',
-    // paddingHorizontal: 10,
-    // justifyContent: 'center',
-    // borderColor: '#000000', // black color
   },
   buttonStyles: {
     backgroundColor: customColor.primaryColor,
     height: 40,
-    // padding: 5,
-    // marginLeft: 20,
+
     borderRadius: 4,
-    // borderWidth: 2,
-    // borderColor: 'blue',
+
     paddingHorizontal: 20,
     marginHorizontal: 15,
   },
   buttonText: {
     color: '#ffffff',
     fontSize: 16,
-    // paddingHorizontal: 10,
+
     paddingVertical: 8,
     alignSelf: 'center',
   },

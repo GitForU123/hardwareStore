@@ -25,16 +25,13 @@ const styles = StyleSheet.create({
     marginTop: 5,
     height: 300,
     width: 150,
-    // borderWidth: 1,
-    // borderColor: 'steelblue',
-    // backgroundColor: 'beige',
+
     borderRadius: 10,
   },
   image: {
     width: 150,
     height: 200,
     borderRadius: 10,
-    // marginHorizontal: 5,
   },
   title: {
     marginTop: 5,
@@ -43,7 +40,6 @@ const styles = StyleSheet.create({
     paddingRight: 16,
     alignSelf: 'flex-start',
     marginVertical: 2,
-    // marginHorizontal: 5,
   },
 });
 export default Item;

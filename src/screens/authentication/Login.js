@@ -6,7 +6,7 @@ import {
   TextInput,
   TouchableHighlight,
   ToastAndroid,
-  ImageBackground,
+  Alert,
 } from 'react-native';
 import {
   GoogleSignin,
@@ -16,38 +16,36 @@ import {
 import auth from '@react-native-firebase/auth';
 import customColor from '../../../src/assets/colors/customColor';
 import Feather from 'react-native-vector-icons/Feather';
-import {StackActions} from '@react-navigation/native';
-import useAuth from '../../hooks/useAuth';
+
+import Header from '../../components/Header';
+import OverlayLoadingSpinner from '../../components/OverlayLoadingSpinner';
 
 const LogIn = ({navigation}) => {
   const [emailAddress, setEmailAddress] = useState('');
   const [password, setPassword] = useState('');
   const [isPasswordShow, setIsPasswordShow] = useState(false);
-  const [loggedIn, setloggedIn] = useState(false);
-  const [user, setUser] = useState();
-  // const {handleGoogleSignIn} = useAuth();
 
-  // const handleGoogleAuth = () => {
-  //   handleGoogleSignIn();
-  //   navigation.replace('AdminHome');
-  // };
+  const [user, setUser] = useState();
+  const [loading, setLoading] = useState(false);
 
   function handleSignIn() {
     if (emailAddress && password) {
+      setLoading(true);
       auth()
         .signInWithEmailAndPassword(emailAddress, password)
         .then(() => {
+          setLoading(false);
+          setPassword('');
           ToastAndroid.show('Successfully LoggedIn', ToastAndroid.SHORT);
-          // navigation.navigate('AdminHome');
-          // navigation.replace('AdminHome');
-          // navigation.dispatch(StackActions.replace('AdminHome'));
+          // Resets all the route upto defined index and navigate to defined route
           navigation.reset({
             index: 0,
             routes: [{name: 'AdminHome'}],
           });
         })
         .catch(error => {
-          console.log(`${error.code}`);
+          setLoading(false);
+
           ToastAndroid.show(`${error.code}`, ToastAndroid.SHORT);
         });
     } else {
@@ -58,26 +56,33 @@ const LogIn = ({navigation}) => {
     try {
       await GoogleSignin.hasPlayServices();
       const {accessToken, idToken} = await GoogleSignin.signIn();
-      console.log('Access token: ', accessToken);
-      console.log('--------');
-      console.log('Idtoken : ', idToken);
-      setloggedIn(true);
+
       const credential = auth.GoogleAuthProvider.credential(
         idToken,
         accessToken,
       );
+      setLoading(true);
       auth()
         .signInWithCredential(credential)
         .then(() => {
+          setLoading(false);
+          setPassword('');
           ToastAndroid.show('Successfully LoggedIn', ToastAndroid.SHORT);
-          ToastAndroid.show(user.displayName, ToastAndroid.SHORT);
-          navigation.navigate('AdminHome');
+
+          navigation.reset({
+            index: 0,
+            routes: [{name: 'AdminHome'}],
+          });
         })
         .catch(error => {
+          setLoading(false);
+          setPassword('');
           console.log(`${error.code}`);
           ToastAndroid.show(`${error.code}`, ToastAndroid.SHORT);
         });
     } catch (error) {
+      setLoading(false);
+      setPassword('');
       if (error.code === statusCodes.SIGN_IN_CANCELLED) {
         // user cancelled the login flow
         Alert.alert('Cancel');
@@ -102,70 +107,60 @@ const LogIn = ({navigation}) => {
         '904585426981-06vi140ig2b8qmk4v3nqq3t1vbtr4qe8.apps.googleusercontent.com', // client ID of type WEB for your server (needed to verify user ID and offline access)
       offlineAccess: true, // if you want to access Google API on behalf of the user FROM YOUR SERVER
     });
-    const subscriber = auth().onAuthStateChanged(onAuthStateChanged);
-    return subscriber; // unsubscribe on unmount
   }, []);
-  function onAuthStateChanged(user) {
-    setUser(user);
-    console.log(user);
-    if (user) setloggedIn(true);
-  }
+
   return (
     <View style={styles.container}>
-      <ImageBackground
-        style={{flex: 1}}
-        source={require('../../assets/images/background.png')}>
-        <Text style={styles.heading}>Sign In Here</Text>
-        <View style={styles.inputWrapper}>
-          <Feather name="mail" style={styles.iconStyle} />
-          <TextInput
-            style={styles.input}
-            onChangeText={text => setEmailAddress(text)}
-            value={emailAddress}
-            textContentType="emailAddress"
-            keyboardType="email-address"
-            placeholder="Email Address "></TextInput>
-        </View>
-        <View style={styles.inputWrapper}>
-          <Feather name="lock" style={styles.iconStyle} />
-          <TextInput
-            style={styles.input}
-            onChangeText={text => setPassword(text)}
-            value={password}
-            textContentType="password"
-            placeholder="Min Password length 6"
-            secureTextEntry={isPasswordShow ? false : true}></TextInput>
-          <Feather
-            name={isPasswordShow ? 'eye' : 'eye-off'}
-            style={styles.iconStyle}
-            onPress={() => setIsPasswordShow(!isPasswordShow)}
-          />
-        </View>
-        <TouchableHighlight
-          onPress={() => navigation.navigate('ForgotPassWordScreen')}
-          style={styles.forgotPasswordWrapper}>
-          <Text style={styles.forgotPasswordText}>Forgot Password?</Text>
-        </TouchableHighlight>
-        <TouchableHighlight
-          style={styles.button}
-          onPress={() => handleSignIn()}>
-          <Text style={styles.buttonText}>LOGIN</Text>
-        </TouchableHighlight>
-
-        <TouchableHighlight
-          style={[styles.button, styles.buttonCancel]}
-          onPress={() => {
-            navigation.goBack();
-          }}>
-          <Text style={styles.buttonText}>CANCEL</Text>
-        </TouchableHighlight>
-        <GoogleSigninButton
-          style={styles.googleButton}
-          size={GoogleSigninButton.Size.Wide}
-          color={GoogleSigninButton.Color.Dark}
-          onPress={() => handleGoogleSignIn()}
+      <Header nav={navigation} title="Login" />
+      <Text style={styles.heading}>Sign In Here</Text>
+      <View style={styles.inputWrapper}>
+        <Feather name="mail" style={styles.iconStyle} />
+        <TextInput
+          style={styles.input}
+          onChangeText={text => setEmailAddress(text)}
+          value={emailAddress}
+          textContentType="emailAddress"
+          keyboardType="email-address"
+          placeholder="Email Address "></TextInput>
+      </View>
+      <View style={styles.inputWrapper}>
+        <Feather name="lock" style={styles.iconStyle} />
+        <TextInput
+          style={styles.input}
+          onChangeText={text => setPassword(text)}
+          value={password}
+          textContentType="password"
+          placeholder="Min Password length 6"
+          secureTextEntry={isPasswordShow ? false : true}></TextInput>
+        <Feather
+          name={isPasswordShow ? 'eye' : 'eye-off'}
+          style={styles.iconStyle}
+          onPress={() => setIsPasswordShow(!isPasswordShow)}
         />
-      </ImageBackground>
+      </View>
+      <TouchableHighlight
+        onPress={() => navigation.navigate('ForgotPassWordScreen')}
+        style={styles.forgotPasswordWrapper}>
+        <Text style={styles.forgotPasswordText}>Forgot Password?</Text>
+      </TouchableHighlight>
+      <TouchableHighlight style={styles.button} onPress={() => handleSignIn()}>
+        <Text style={styles.buttonText}>LOGIN</Text>
+      </TouchableHighlight>
+
+      <TouchableHighlight
+        style={[styles.button, styles.buttonCancel]}
+        onPress={() => {
+          navigation.goBack();
+        }}>
+        <Text style={styles.buttonText}>CANCEL</Text>
+      </TouchableHighlight>
+      <GoogleSigninButton
+        style={styles.googleButton}
+        size={GoogleSigninButton.Size.Wide}
+        color={GoogleSigninButton.Color.Dark}
+        onPress={() => handleGoogleSignIn()}
+      />
+      {loading && <OverlayLoadingSpinner />}
     </View>
   );
 };
@@ -174,7 +169,6 @@ const styles = StyleSheet.create({
   container: {
     flex: 1, // match parent
     justifyContent: 'flex-start',
-    backgroundColor: 'coral',
   },
   heading: {
     textAlign: 'center',
@@ -188,7 +182,7 @@ const styles = StyleSheet.create({
     height: 50,
     borderRadius: 5,
     borderWidth: 1,
-    borderColor: customColor.blue,
+    borderColor: customColor.primaryColor,
     margin: 8,
   },
   input: {
@@ -223,7 +217,7 @@ const styles = StyleSheet.create({
     marginRight: 10,
   },
   forgotPasswordText: {
-    color: customColor.white,
+    color: customColor.primaryColor,
   },
 });
 
