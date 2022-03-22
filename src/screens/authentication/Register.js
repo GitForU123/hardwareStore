@@ -7,6 +7,7 @@ import {
   TouchableOpacity,
   ToastAndroid,
 } from 'react-native';
+import firestore from '@react-native-firebase/firestore';
 import {SafeAreaView} from 'react-native-safe-area-context';
 import Feather from 'react-native-vector-icons/Feather';
 import customColor from '../../../src/assets/colors/customColor';
@@ -18,7 +19,13 @@ const Register = ({navigation}) => {
   const [username, setUserName] = useState('');
   const [userEmail, setuserEmail] = useState('');
   const [password, setPassword] = useState('');
+
+  const [phone, setPhone] = useState();
+  const [city, setCity] = useState('Please update address');
+  const [address, setAddress] = useState(' ');
+
   const [loading, setLoading] = useState(false);
+
 
   const [isPasswordShow, setIsPasswordShow] = useState(false);
 
@@ -36,17 +43,29 @@ const Register = ({navigation}) => {
       return false;
     }
   };
-  const handleRegister = () => {
+  const handleRegister = async () => {
     if (validateData(username, userEmail, password)) {
-      setLoading(true);
-      auth()
-        .createUserWithEmailAndPassword(userEmail, password)
-        .then(() => {
-          setLoading(false);
-          setPassword('');
-          ToastAndroid.show('Sucessfully Registerd', ToastAndroid.SHORT);
 
-          navigation.navigate('LogIn');
+      await auth()
+        .createUserWithEmailAndPassword(userEmail, password)
+        .then(async() => {
+          ToastAndroid.show('Sucessfully Registerd', ToastAndroid.SHORT);
+          const usersData = await firestore()
+            .collection('users')
+            .add({username, userEmail});
+            await firestore().collection('users').doc(usersData.id).set({
+              id: usersData.id,
+              username, 
+              userEmail,
+              phone, 
+              city,
+              address,
+              image: null, 
+              uid: auth().currentUser?.uid,
+            });  
+          // navigation.navigate('LogIn');
+          navigation.replace('LogIn');
+
         })
         .catch(error => {
           console.log(`errorcode : ${error.code} and error : ${error}`);
@@ -57,6 +76,7 @@ const Register = ({navigation}) => {
   };
   return (
     <SafeAreaView style={styles.container}>
+
       <View>
         <Header nav={navigation} title="Register" />
         <Text style={styles.heading}>Create Your Account</Text>
@@ -68,33 +88,50 @@ const Register = ({navigation}) => {
             value={username}
             placeholder="Enter Your Name"
           />
-        </View>
 
-        <View style={styles.inputWrapper}>
-          <Feather name="mail" style={styles.iconStyle} />
-          <TextInput
-            style={styles.inputs}
-            onChangeText={text => setuserEmail(text)}
-            value={userEmail}
-            keyboardType="email-address"
-            placeholder="Enter Your  Email "
-          />
-        </View>
-        <View style={styles.inputWrapper}>
-          <Feather name="lock" style={styles.iconStyle} />
-          <TextInput
-            style={styles.inputs}
-            onChangeText={text => setPassword(text)}
-            value={password}
-            placeholder="Enter Your Password"
-            secureTextEntry={isPasswordShow ? false : true}
-          />
-          <Feather
-            name={isPasswordShow ? 'eye' : 'eye-off'}
-            style={styles.iconStyle}
-            onPress={() => setIsPasswordShow(!isPasswordShow)}
-          />
-        </View>
+          <View style={styles.inputWrapper}>
+            <Feather name="mail" style={styles.iconStyle} />
+            <TextInput
+              style={styles.inputs}
+              onChangeText={text => setuserEmail(text)}
+              value={userEmail}
+              keyboardType="email-address"
+              placeholder="Enter Your  Email "
+            />
+          </View>
+
+          <View style={styles.inputWrapper}>
+            <Feather name="phone" style={styles.iconStyle} />
+            <TextInput
+              style={styles.inputs}
+              onChangeText={text => setPhone(text)}
+              value={phone}
+              keyboardType="numeric"
+              placeholder="Enter Your  Phone Number"
+            />
+          </View>
+
+          <View style={styles.inputWrapper}>
+            <Feather name="lock" style={styles.iconStyle} />
+            <TextInput
+              style={styles.inputs}
+              onChangeText={text => setPassword(text)}
+              value={password}
+              placeholder="Enter Your Password"
+              secureTextEntry={isPasswordShow ? false : true}
+            />
+            <Feather
+              name={isPasswordShow ? 'eye' : 'eye-off'}
+              style={styles.iconStyle}
+              onPress={() => setIsPasswordShow(!isPasswordShow)}
+            />
+          </View>
+
+
+     
+
+       
+      
       </View>
       <View style={styles.buttonRow}>
         <TouchableOpacity
