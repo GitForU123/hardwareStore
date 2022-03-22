@@ -88,7 +88,7 @@ const Register = ({navigation}) => {
             value={username}
             placeholder="Enter Your Name"
           />
-
+          </View>
           <View style={styles.inputWrapper}>
             <Feather name="mail" style={styles.iconStyle} />
             <TextInput
@@ -126,12 +126,6 @@ const Register = ({navigation}) => {
               onPress={() => setIsPasswordShow(!isPasswordShow)}
             />
           </View>
-
-
-     
-
-       
-      
       </View>
       <View style={styles.buttonRow}>
         <TouchableOpacity
