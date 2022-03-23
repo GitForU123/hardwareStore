@@ -12,6 +12,7 @@ const CollectionScreen = ({route, navigation}) => {
 
   const {storeData} = useSelector(state => state.DBReducer);
 
+
   const [uniqueCollection, setUniqueCollection] = useState([]);
 
   const dispatch = useDispatch();
@@ -42,6 +43,7 @@ const CollectionScreen = ({route, navigation}) => {
 
   return (
     <>
+
       <Header nav={navigation} title="Collection" />
       <ScrollView>
         <View>
@@ -63,6 +65,9 @@ const CollectionScreen = ({route, navigation}) => {
         </View>
       </ScrollView>
     </>
+
+    
+
   );
 };
 
