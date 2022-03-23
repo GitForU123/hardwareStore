@@ -6,6 +6,7 @@ import {
   TouchableOpacity,
   Image,
   ScrollView,
+  TouchableHighlight,
 } from 'react-native';
 
 import {useDispatch} from 'react-redux';
@@ -76,9 +77,12 @@ const AddItem = ({navigation, route, theme}) => {
   const groupRef = database().ref('group');
   const onGroupChange = snapshot => {
     const data = snapshot.val();
-   
+    let customListObject = {};
+    for (let [key, value] of Object.entries(data)) {
+      customListObject[key] = Object.values(value);
+    }
 
-    setCategoryToGroupArray(data);
+    setCategoryToGroupArray(customListObject);
   };
 
   const categoryRef = database().ref('catogory');
@@ -101,7 +105,7 @@ const AddItem = ({navigation, route, theme}) => {
   }, []);
 
   const paperTheme = useTheme();
- 
+
   return (
     <ScrollView>
       <Header nav={navigation} title="Add Item" />
@@ -136,6 +140,11 @@ const AddItem = ({navigation, route, theme}) => {
           list={categoryArray}
         />
       </View>
+      <TouchableHighlight
+        onPress={() => navigation.navigate('AddGroup')}
+        style={styles.addNewGroupCategoryWrapper}>
+        <Text style={styles.addCategoryGroupText}>Add New category</Text>
+      </TouchableHighlight>
       <View style={styles.dropDownWrapper}>
         <DropDown
           label="Group"
@@ -257,6 +266,14 @@ const styles = StyleSheet.create({
   iconStyle: {
     alignSelf: 'center',
     paddingRight: 5,
+  },
+  addNewGroupCategoryWrapper: {
+    alignSelf: 'flex-end',
+    marginVertical: 5,
+    marginRight: 10,
+  },
+  addCategoryGroupText: {
+    color: customColor.primaryColor,
   },
 });
 export default AddItem;

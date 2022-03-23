@@ -40,7 +40,7 @@ const LogIn = ({navigation}) => {
           // Resets all the route upto defined index and navigate to defined route
           navigation.reset({
             index: 0,
-            routes: [{name: 'AdminHome'}],
+            routes: [{name: 'Drawer'}],
           });
         })
         .catch(error => {
@@ -71,7 +71,7 @@ const LogIn = ({navigation}) => {
 
           navigation.reset({
             index: 0,
-            routes: [{name: 'AdminHome'}],
+            routes: [{name: 'Drawer'}],
           });
         })
         .catch(error => {

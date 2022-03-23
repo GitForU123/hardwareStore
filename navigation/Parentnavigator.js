@@ -8,7 +8,7 @@ import Register from '../src/screens/authentication/Register';
 import Welcome from '../src/screens/welcome/Welcome';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import AdminTabNavigator from './TabNavigator';
-import ProfileDrawer from './DrawerNavigator';
+
 import AddItem from '../src/screens/admin/AddItem';
 import CollectionScreen from '../src/screens/admin/CollectionScreen';
 import DatePicker from '../src/components/DatePicker';
@@ -16,7 +16,9 @@ import CheckOut from '../src/screens/admin/Checkout';
 import customColor from '../src/assets/colors/customColor';
 
 import Support from '../src/screens/profile/Support';
-
+import Drawer from './DrawerNavigator';
+import CustomDrawerNavigator from './DrawerNavigator';
+import AddItemCategoryGroup from '../src/screens/admin/AddCategoryGroup';
 
 const Stack = createStackNavigator();
 const config = {
@@ -79,9 +81,8 @@ const ParentNavigator = () => {
         }}
       />
 
-      <Stack.Screen name="AdminHome" component={AdminTabNavigator} />
-      <Stack.Screen name="ProfileDrawer" component={ProfileDrawer} />
-      <Stack.Screen name="Support" component={Support}  />
+      <Stack.Screen name="Drawer" component={CustomDrawerNavigator} />
+      <Stack.Screen name="Support" component={Support} />
       <Stack.Screen name="AddItem" component={AddItem} />
       <Stack.Screen name="CollectionScreen" component={CollectionScreen} />
       <Stack.Screen
@@ -93,6 +94,11 @@ const ParentNavigator = () => {
         }}
       />
       <Stack.Screen name="CheckOut" component={CheckOut} />
+      <Stack.Screen
+        name="AddGroup"
+        component={AddItemCategoryGroup}
+        options={{presentation: 'transparentModal', cardOverlayEnabled: true}}
+      />
     </Stack.Navigator>
   );
 };
