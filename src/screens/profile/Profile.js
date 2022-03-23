@@ -23,12 +23,11 @@ import {
 } from 'react-native-paper';
 import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
 import {connect} from 'react-redux';
-import { TabActions } from '@react-navigation/native';
+import {TabActions} from '@react-navigation/native';
 import useAuth from '../../hooks/useAuth';
 import Header from '../../components/Header';
 
-
-export default function Profile({navigation,props}) {
+export default function Profile({navigation, props}) {
   const [result, setResult] = useState([]);
   const [loading, setLoading] = useState(false);
   const [amount, setAmount] = useState(0);
@@ -45,7 +44,7 @@ export default function Profile({navigation,props}) {
       routes: [{name: 'LogIn'}],
     });
   };
- 
+
   useEffect(() => {
     var RandomNumber = Math.floor(Math.random() * 100) + 1;
     setNumber(RandomNumber);
@@ -62,14 +61,19 @@ export default function Profile({navigation,props}) {
         </View>
       ) : (
         <>
-         <Header title="Profile" nav={navigation} />
+
+
           <View style={styles.userInfoSection}>
-            <View style={{flexDirection: 'column', marginTop: 15, alignItems:'center'}}>
+            <View
+              style={{
+                flexDirection: 'column',
+                marginTop: 15,
+                alignItems: 'center',
+              }}>
               <Image
                 source={{
                   uri: result
-                    ? result.image ||
-                      user.photoURL
+                    ? result.image || user.photoURL
                     : 'https://www.pngall.com/wp-content/uploads/12/Avatar-Profile-PNG-Cutout.png',
                 }}
                 style={{
@@ -106,21 +110,21 @@ export default function Profile({navigation,props}) {
           <View style={styles.userInfoSection}>
             <View style={styles.row}>
               <Icon name="map-marker-radius" color="#777777" size={21} />
-              <Text style={{color: '#777777', marginLeft: 20, fontSize:14}}>
+              <Text style={{color: '#777777', marginLeft: 20, fontSize: 14}}>
                 {/* {result.address + ', ' + result.city} */}
                 Whitefield, Bangalore
               </Text>
             </View>
             <View style={styles.row}>
               <Icon name="phone" color="#777777" size={21} />
-              <Text style={{color: '#777777', marginLeft: 20, fontSize:14}}>
+              <Text style={{color: '#777777', marginLeft: 20, fontSize: 14}}>
                 {/* {result.phone} */}
                 9999888827
               </Text>
             </View>
             <View style={styles.row}>
               <Icon name="email" color="#777777" size={21} />
-              <Text style={{color: '#777777', marginLeft: 20, fontSize:14}}>
+              <Text style={{color: '#777777', marginLeft: 20, fontSize: 14}}>
                 {/* {result.email} */}
                 {user.email}
               </Text>
@@ -139,12 +143,12 @@ export default function Profile({navigation,props}) {
                 },
               ]}>
               <Title>{count}</Title> */}
-              {/* <Title>Num</Title> */}
-              {/* <Caption>Total categories</Caption>
+          {/* <Title>Num</Title> */}
+          {/* <Caption>Total categories</Caption>
             </View>
             <View style={styles.infoBox}> */}
-              {/* <Title>{coins}</Title> */}
-              {/* <Title>88</Title>
+          {/* <Title>{coins}</Title> */}
+          {/* <Title>88</Title>
               <Caption>Sold</Caption>
             </View>
           </View>  */}
@@ -156,19 +160,19 @@ export default function Profile({navigation,props}) {
                 // Alert.alert('Go to inventory', 'Navigate to inventory')
               }}>
               <View style={styles.menuItem}>
-                <Icon name="store"  size={25} />
+                <Icon name="store" size={25} />
                 <Text style={styles.menuItemText}>Your Inventory</Text>
               </View>
             </TouchableRipple>
             <TouchableRipple
               onPress={() => {
-                navigation.goBack()
+                navigation.goBack();
                 // Alert.alert('Dashboard', 'Pressed')
               }}>
               <View style={styles.menuItem}>
                 <Icon
                   name="home"
-                //   color={red}
+                  //   color={red}
                   size={25}
                 />
                 <Text style={styles.menuItemText}>Dashboard</Text>
@@ -249,7 +253,6 @@ export default function Profile({navigation,props}) {
   );
 }
 
-
 const styles = StyleSheet.create({
   containeract: {
     flex: 1,
@@ -275,7 +278,7 @@ const styles = StyleSheet.create({
     fontSize: 14,
     lineHeight: 14,
     fontWeight: '500',
-    marginLeft: '12.5%'
+    marginLeft: '12.5%',
   },
   row: {
     flexDirection: 'row',
@@ -318,4 +321,3 @@ const styles = StyleSheet.create({
     lineHeight: 26,
   },
 });
-

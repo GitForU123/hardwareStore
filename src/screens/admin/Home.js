@@ -1,4 +1,3 @@
-
 import React, {useEffect, useState} from 'react';
 import {View, Text, StyleSheet, TouchableOpacity} from 'react-native';
 import {useDispatch} from 'react-redux';
@@ -13,12 +12,14 @@ import Header from '../../components/Header';
 import Icon from 'react-native-vector-icons/FontAwesome';
 
 
+const AdminHome = ({navigation}) => {
 
 
 
 
-const AdminHome = ({ navigation }) => {
-  
+
+
+
   const [uniqueCollection, setUniqueCollection] = useState([]);
 
   const dispatch = useDispatch();
@@ -49,16 +50,15 @@ const AdminHome = ({ navigation }) => {
 
   return (
     <View style={styles.container}>
+      {/* <Header title="Home" nav={navigation} /> */}
 
-      <Header title="Home" nav={navigation} />
+      {/* <UserTab navigation={navigation} /> */}
 
-      <UserTab navigation={navigation} />
-
-      <TouchableOpacity
+      {/* <TouchableOpacity
         onPress={() => navigation.navigate('AddItem')}
         style={styles.buttonStyles}>
         <Icon name="plus" size={35} color="brown" />
-      </TouchableOpacity>
+      </TouchableOpacity> */}
       {/* <TouchableOpacity
         onPress={() => navigation.navigate('AddItem')}
         style={styles.buttonStyles}>
@@ -99,20 +99,13 @@ const styles = StyleSheet.create({
     flexWrap: 'wrap',
   },
   buttonStyles: {
-
-    position: "absolute",
+    position: 'absolute',
     bottom: 0,
     width: 50,
     height: 50,
     borderRadius: 40,
     marginRight: 15,
-    alignSelf: "flex-end",
-
-
-
-
-
-
+    alignSelf: 'flex-end',
   },
   buttonText: {
     color: '#ffffff',

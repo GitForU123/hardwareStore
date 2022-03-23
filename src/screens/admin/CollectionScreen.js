@@ -1,6 +1,6 @@
-import React, { useEffect, useState } from 'react';
-import { View, Text, StyleSheet, ScrollView } from 'react-native';
-import { useDispatch, useSelector } from 'react-redux';
+import React, {useEffect, useState} from 'react';
+import {View, Text, StyleSheet, ScrollView} from 'react-native';
+import {useDispatch, useSelector} from 'react-redux';
 
 import ItemList from '../../components/ItemList';
 
@@ -43,39 +43,37 @@ const CollectionScreen = ({route, navigation}) => {
 
   return (
     <>
-     <Header nav={navigation} title="Collection" />
 
-    <ScrollView>
-     
-      <View>
-        {uniqueCollection.map(item => {
-          return (
-            <View key={item}>
-              <Text style={styles.titleHeader}>{item}</Text>
-              <ItemList
-                itemData={storeData.filter(data => {
-                  return (
-                    data.itemCategory === collection && data.itemGroup === item
-                  );
-                })}
-              />
-            </View>
-          );
-        })}
-      </View>
+      <Header nav={navigation} title="Collection" />
+      <ScrollView>
+        <View>
+          {uniqueCollection.map(item => {
+            return (
+              <View key={item}>
+                <Text style={styles.titleHeader}>{item}</Text>
+                <ItemList
+                  itemData={storeData.filter(data => {
+                    return (
+                      data.itemCategory === collection &&
+                      data.itemGroup === item
+                    );
+                  })}
+                />
+              </View>
+            );
+          })}
+        </View>
+      </ScrollView>
+    </>
 
-    </ScrollView>
-</>
+    
+
   );
 };
 
 const styles = StyleSheet.create({
   itemWrapper: {
-
-    backgroundColor: "#EEE8AA",
-
-
-
+    backgroundColor: '#EEE8AA',
   },
   itemStyle: {
     flexDirection: 'column',
