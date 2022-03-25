@@ -45,6 +45,7 @@ const AdminTabNavigator = () => {
         name="Sold"
         component={Sold}
         options={{
+          headerShown: false,
           tabBarIcon: tabInfo => (
             <MaterialIcons
               name="shopping-cart"

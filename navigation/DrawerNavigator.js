@@ -6,6 +6,7 @@ import customColor from '../src/assets/colors/customColor';
 import CustomDrawerContent from '../src/components/CustomDrawerContent';
 import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
 import Feather from 'react-native-vector-icons/Feather';
+import {HomeStackNavigator} from './Parentnavigator';
 
 const Drawer = createDrawerNavigator();
 

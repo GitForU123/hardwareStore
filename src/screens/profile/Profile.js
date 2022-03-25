@@ -26,6 +26,7 @@ import {connect} from 'react-redux';
 import {TabActions} from '@react-navigation/native';
 import useAuth from '../../hooks/useAuth';
 import Header from '../../components/Header';
+import customColor from '../../assets/colors/customColor';
 
 export default function Profile({navigation, props}) {
   const [result, setResult] = useState([]);
@@ -80,7 +81,7 @@ export default function Profile({navigation, props}) {
                   height: 100,
                   borderRadius: 15,
                   borderWidth: 2,
-                  borderColor: 'red',
+                  borderColor: customColor.primaryColor,
                   // left: 3,
                   top: 10,
                 }}

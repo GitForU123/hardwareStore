@@ -43,7 +43,7 @@ const CustomDrawerContent = props => {
   return (
     <DrawerContentScrollView {...props}>
       <View style={{flex: 1}}>
-        <UserTab navigation={navigation} />
+        <UserTab />
       </View>
 
       <DrawerItemList {...props} />
