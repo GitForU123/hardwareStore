@@ -62,7 +62,8 @@ export default function Profile({navigation, props}) {
         </View>
       ) : (
         <>
-          {/* <Header title="Profile" nav={navigation} /> */}
+
+
           <View style={styles.userInfoSection}>
             <View
               style={{

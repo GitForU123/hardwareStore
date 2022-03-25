@@ -11,7 +11,15 @@ import MenuItem from '../../components/MenuItem';
 import Header from '../../components/Header';
 import Icon from 'react-native-vector-icons/FontAwesome';
 
+
 const AdminHome = ({navigation}) => {
+
+
+
+
+
+
+
   const [uniqueCollection, setUniqueCollection] = useState([]);
 
   const dispatch = useDispatch();
