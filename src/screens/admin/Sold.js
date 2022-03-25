@@ -1,5 +1,5 @@
-import { firebase } from '@react-native-firebase/firestore';
-import React, { useEffect, useState } from 'react';
+import {firebase} from '@react-native-firebase/firestore';
+import React, {useEffect, useState} from 'react';
 import {
   View,
   Text,
@@ -8,20 +8,16 @@ import {
   Image,
   SafeAreaView,
 } from 'react-native';
-import { useDispatch, useSelector } from 'react-redux';
+import {useDispatch, useSelector} from 'react-redux';
 import customColor from '../../assets/colors/customColor';
 import Header from '../../components/Header';
 
 import SoldItem from '../../components/SoldItem';
 
-
 import {getSoldInventory} from '../../redux/actions/DBAction';
 
 const Sold = ({navigation}) => {
   const {soldList} = useSelector(state => state.DBReducer);
-
-
-
 
   const dispatch = useDispatch();
   const getSoldList = () => dispatch(getSoldInventory());
@@ -30,9 +26,8 @@ const Sold = ({navigation}) => {
   }, []);
 
   return (
-
     <SafeAreaView style={styles.container}>
-      <Header nav={navigation} title="Sold" />
+      {/* <Header nav={navigation} title="Sold" /> */}
 
       <View style={styles.listWrapper}>
         <FlatList
@@ -42,7 +37,6 @@ const Sold = ({navigation}) => {
             return <SoldItem item={item} />;
           }}
         />
-
       </View>
     </SafeAreaView>
   );
@@ -50,8 +44,7 @@ const Sold = ({navigation}) => {
 
 const styles = StyleSheet.create({
   container: {
-    backgroundColor: 'white'
-
+    backgroundColor: 'white',
   },
   heading: {
     textAlign: 'center',
@@ -61,10 +54,8 @@ const styles = StyleSheet.create({
     color: customColor.primaryColor,
   },
   listWrapper: {
+    paddingTop: 10,
     paddingHorizontal: 10,
-    paddingBottom: 100,
-
-
   },
 });
 

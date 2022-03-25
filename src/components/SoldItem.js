@@ -1,15 +1,8 @@
-import React, { useEffect, useState } from 'react';
-import {
-  View,
-  Text,
-  StyleSheet,
-
-  Image,
-  
-} from 'react-native';
+import React, {useEffect, useState} from 'react';
+import {View, Text, StyleSheet, Image} from 'react-native';
 import customColor from '../assets/colors/customColor';
 
-const SoldItem = ({ item }) => {
+const SoldItem = ({item}) => {
   return (
     <View style={styles.itemWrapper}>
       <View style={styles.itemStyle}>
@@ -22,7 +15,7 @@ const SoldItem = ({ item }) => {
         </Text>
       </View>
       <Image
-        source={{ uri: 'data:image/jpeg;base64,' + item.itemURL }}
+        source={{uri: 'data:image/jpeg;base64,' + item.itemURL}}
         resizeMode="cover"
         style={styles.image}
       />
@@ -37,7 +30,7 @@ const styles = StyleSheet.create({
   },
   itemWrapper: {
     paddingHorizontal: 10,
-    backgroundColor: "#EEE8AA",
+    backgroundColor: 'lightskyblue',
 
     borderRadius: 10,
     flexDirection: 'row',

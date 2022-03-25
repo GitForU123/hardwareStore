@@ -1,14 +1,6 @@
 import {useNavigation} from '@react-navigation/native';
 import React from 'react';
-import {
-  View,
-  Text,
-  Button,
-  FlatList,
-  StyleSheet,
-  Image,
-  TouchableOpacity,
-} from 'react-native';
+import {View, Text, Button, FlatList, StyleSheet, Image} from 'react-native';
 import useAuth from '../hooks/useAuth';
 
 const UserTab = () => {
@@ -18,11 +10,9 @@ const UserTab = () => {
     <View style={styles.container}>
       {user ? (
         <View style={styles.userTabWrapper}>
-          <TouchableOpacity
-            style={styles.imageStyle}
-            onPress={() => navigation.navigate('ProfileDrawer')}>
+          <View style={styles.imageStyle}>
             <Image style={styles.imageStyle} source={{uri: user.photoURL}} />
-          </TouchableOpacity>
+          </View>
           <Text style={styles.textStyle}>Hi,{user.displayName}</Text>
         </View>
       ) : (

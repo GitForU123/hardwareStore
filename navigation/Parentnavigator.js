@@ -46,7 +46,7 @@ const ParentNavigator = () => {
   });
   return (
     <Stack.Navigator
-      initialRouteName="Welcome"
+      initialRouteName="Drawer"
       screenOptions={{
         headerShown: false,
         headerStyle: {
@@ -102,6 +102,14 @@ const ParentNavigator = () => {
     </Stack.Navigator>
   );
 };
+
+// export function HomeStackNavigator() {
+//   return (
+//     <Stack.Navigator screenOptions={{headerShown: false}}>
+//       <Stack.Screen name="HomeStack" component={AdminTabNavigator} />
+//     </Stack.Navigator>
+//   );
+// }
 
 const styles = StyleSheet.create({
   header: {},
