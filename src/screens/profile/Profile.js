@@ -23,7 +23,7 @@ import {
 } from 'react-native-paper';
 import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
 import {connect} from 'react-redux';
-import {TabActions} from '@react-navigation/native';
+import {TabActions, useFocusEffect} from '@react-navigation/native';
 import useAuth from '../../hooks/useAuth';
 import Header from '../../components/Header';
 import customColor from '../../assets/colors/customColor';
@@ -46,8 +46,46 @@ export default function Profile({navigation, props}) {
     });
   };
 
+  // useFocusEffect(() => {
+  //   console.log('user tab screen');
+  //   const getdetails = async () => {
+  //     // setLoading(true);
+  //     const querySnap = await firestore()
+  //       .collection('users')
+  //       .where('uid', '==', auth().currentUser.uid)
+  //       .get();
+  //     let res = querySnap.docs.map(docSnap => docSnap.data());
+  //     setResult(res[0]);
+  //     // setLoading(false);
+  //     console.log('res ', res);
+  //     console.log('result after set', result);
+  //     console.log('result after set at user tab screen', result);
+  //   };
+  //   getdetails();
+  // }, []);
+
+  useFocusEffect(
+    React.useCallback(() => {
+    console.log('user tab screen');
+    const getdetails = async () => {
+      // setLoading(true);
+      const querySnap = await firestore()
+        .collection('users')
+        .where('uid', '==', auth().currentUser.uid)
+        .get();
+      let res = querySnap.docs.map(docSnap => docSnap.data());
+      setResult(res[0]);
+      // setLoading(false);
+      console.log('res ', res);
+      console.log('result after set', result);
+      console.log('result after set at user tab screen', result);
+    };
+    getdetails();
+  }, [])
+  );
+
   useEffect(() => {
-    var RandomNumber = Math.floor(Math.random() * 100) + 1;
+    var RandomNumber = Math.floor(Math.random() * 100) + 10;
     setNumber(RandomNumber);
     console.log('number', number);
     console.log('result in useeefec', result);
@@ -73,9 +111,11 @@ export default function Profile({navigation, props}) {
               }}>
               <Image
                 source={{
-                  uri: result
-                    ? result.image || user.photoURL
-                    : 'https://www.pngall.com/wp-content/uploads/12/Avatar-Profile-PNG-Cutout.png',
+                  // uri: result
+                  //   ? result.image || user?.photoURL
+                  //   : 'https://www.pngall.com/wp-content/uploads/12/Avatar-Profile-PNG-Cutout.png',
+                  uri: result?.image ? result.image : user?.photoURL
+                
                 }}
                 style={{
                   width: 100,
@@ -83,6 +123,8 @@ export default function Profile({navigation, props}) {
                   borderRadius: 15,
                   borderWidth: 2,
                   borderColor: customColor.primaryColor,
+                  borderColor: customColor.steelblue,
+
                   // left: 3,
                   top: 10,
                 }}
@@ -98,10 +140,10 @@ export default function Profile({navigation, props}) {
                     },
                   ]}>
                   {/* {result.name} */}
-                  {user.displayName}
+                  {result?.username? result.username : user?.displayName}
                 </Title>
                 <Caption style={styles.caption}>
-                  @{user.displayName.slice(0, 5)}
+                  @{result?.username? result?.username?.slice(0, 5) : user?.displayName?.slice(0, 5)}
                   {number}
                 </Caption>
               </View>
@@ -113,21 +155,23 @@ export default function Profile({navigation, props}) {
               <Icon name="map-marker-radius" color="#777777" size={21} />
               <Text style={{color: '#777777', marginLeft: 20, fontSize: 14}}>
                 {/* {result.address + ', ' + result.city} */}
-                Whitefield, Bangalore
+                {/* Whitefield, Bangalore */}
+                {result?.city ? result.city + ' ' + result.address : "New Delhi"}
               </Text>
             </View>
             <View style={styles.row}>
               <Icon name="phone" color="#777777" size={21} />
               <Text style={{color: '#777777', marginLeft: 20, fontSize: 14}}>
                 {/* {result.phone} */}
-                9999888827
+                {/* 9999888827 */}
+                {result?.phone ? result.phone : "1800 251 364"}
               </Text>
             </View>
             <View style={styles.row}>
               <Icon name="email" color="#777777" size={21} />
               <Text style={{color: '#777777', marginLeft: 20, fontSize: 14}}>
                 {/* {result.email} */}
-                {user.email}
+                {user?.email}
               </Text>
             </View>
           </View>
@@ -191,7 +235,8 @@ export default function Profile({navigation, props}) {
             </TouchableRipple>
 
             {/* Edit profile */}
-            {/* <TouchableRipple
+            {!user.displayName &&
+            <TouchableRipple
             //   onPress={() => {
             //     navigation.navigate('Edit', {
             //       phone: result.phone,
@@ -201,7 +246,8 @@ export default function Profile({navigation, props}) {
             //     });
             //   }}
               onPress={() => {
-                Alert.alert('Edit Profile', 'We can edit name, phone num')
+                // Alert.alert('Edit Profile', 'We can edit name, phone num')
+                navigation.navigate('EditScreen');
               }}
               >
               <View style={styles.menuItem}>
@@ -212,8 +258,8 @@ export default function Profile({navigation, props}) {
                 />
                 <Text style={styles.menuItemText}>Edit Profile</Text>
               </View>
-            </TouchableRipple>
-            <TouchableRipple
+            </TouchableRipple>}
+            {/* <TouchableRipple
             //   onPress={() => {
             //     navigation.navigate('Address', {
             //       phone: result.phone,
@@ -279,7 +325,7 @@ const styles = StyleSheet.create({
     fontSize: 14,
     lineHeight: 14,
     fontWeight: '500',
-    marginLeft: '12.5%',
+    marginLeft: '8.5%',
   },
   row: {
     flexDirection: 'row',

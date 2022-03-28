@@ -19,6 +19,7 @@ import Support from '../src/screens/profile/Support';
 import Drawer from './DrawerNavigator';
 import CustomDrawerNavigator from './DrawerNavigator';
 import AddItemCategoryGroup from '../src/screens/admin/AddCategoryGroup';
+import EditScreen from '../src/screens/profile/EditScreen';
 
 const Stack = createStackNavigator();
 const config = {
@@ -83,6 +84,7 @@ const ParentNavigator = () => {
 
       <Stack.Screen name="Drawer" component={CustomDrawerNavigator} />
       <Stack.Screen name="Support" component={Support} />
+      <Stack.Screen name="EditScreen" component={EditScreen} />
       <Stack.Screen name="AddItem" component={AddItem} />
       <Stack.Screen name="CollectionScreen" component={CollectionScreen} />
       <Stack.Screen
