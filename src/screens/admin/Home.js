@@ -11,15 +11,7 @@ import MenuItem from '../../components/MenuItem';
 import Header from '../../components/Header';
 import Icon from 'react-native-vector-icons/FontAwesome';
 
-
 const AdminHome = ({navigation}) => {
-
-
-
-
-
-
-
   const [uniqueCollection, setUniqueCollection] = useState([]);
 
   const dispatch = useDispatch();
@@ -53,13 +45,13 @@ const AdminHome = ({navigation}) => {
 
       {/* <UserTab navigation={navigation} /> */}
       <Text style={styles.heading}>Add Your Item Here!</Text>
-      <View>
+      {/* <View>
         <TouchableOpacity
           onPress={() => navigation.navigate('AddItem')}
           style={styles.button}>
           <Text style={styles.buttonText}>GO TO ADDITEM</Text>
         </TouchableOpacity>
-      </View>
+      </View> */}
       {/* <View style={styles.menuWrapper}>
         {uniqueCollection.map(item => {
           return (

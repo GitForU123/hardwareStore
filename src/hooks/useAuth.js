@@ -15,7 +15,7 @@ import {
   statusCodes,
 } from '@react-native-google-signin/google-signin';
 import auth from '@react-native-firebase/auth';
-import AsyncStorage from '@react-native-async-storage/async-storage';
+
 import {firebase} from '@react-native-firebase/firestore';
 
 const AuthContext = createContext({});
@@ -69,7 +69,7 @@ export const AuthProvider = ({children}) => {
           //   setUser(auth().currentUser.uid);
           //   console.log('user signed in');
           //   setUser(true);
-          localStorageAuth(auth().currentUser.uid);
+          // localStorageAuth(auth().currentUser.uid);
         })
         .catch(error => {
           console.log(`${error.code}`);
@@ -102,15 +102,15 @@ export const AuthProvider = ({children}) => {
     });
   };
 
-  const localStorageAuth = async signedInUser => {
-    await AsyncStorage.setItem('isUserSignedIn', signedInUser)
-      .then(() => {
-        console.log('userSignedInVaule', signedInUser);
-      })
-      .catch(() => {
-        console.log('some error happened in storing signin info');
-      });
-  };
+  // const localStorageAuth = async signedInUser => {
+  //   await AsyncStorage.setItem('isUserSignedIn', signedInUser)
+  //     .then(() => {
+  //       console.log('userSignedInVaule', signedInUser);
+  //     })
+  //     .catch(() => {
+  //       console.log('some error happened in storing signin info');
+  //     });
+  // };
   const getData = getCollection => {
     const unsubscribe = firebase
       .firestore()

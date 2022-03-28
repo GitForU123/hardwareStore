@@ -37,12 +37,19 @@ const CheckOut = ({navigation, route}) => {
       itemPrice,
       itemURL: item.itemURL,
     };
-    if (Number(item.count) >= Number(count)) {
-      dispatch(addToSoldInventory(data));
-      dispatch(updateCurrentInventory(data.itemGroupId, count));
-      navigation.goBack();
+    if (count && !isNaN(count)) {
+      if (Number(item.count) >= Number(count)) {
+        dispatch(addToSoldInventory(data));
+        dispatch(updateCurrentInventory(data.itemGroupId, count));
+        navigation.goBack();
+      } else {
+        ToastAndroid.show(
+          `only ${item.count} item availble`,
+          ToastAndroid.LONG,
+        );
+      }
     } else {
-      ToastAndroid.show(`only ${item.count} item availble`, ToastAndroid.LONG);
+      ToastAndroid.show('Please put some valid count', ToastAndroid.LONG);
     }
   };
   return (
