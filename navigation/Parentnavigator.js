@@ -6,7 +6,7 @@ import ForgotPasswordScreen from '../src/screens/authentication/ForgotPassword';
 import LogIn from '../src/screens/authentication/Login';
 import Register from '../src/screens/authentication/Register';
 import Welcome from '../src/screens/welcome/Welcome';
-import AsyncStorage from '@react-native-async-storage/async-storage';
+
 import AdminTabNavigator from './TabNavigator';
 
 import AddItem from '../src/screens/admin/AddItem';
@@ -42,12 +42,9 @@ const ParentNavigator = () => {
   // const {user} = useAuth();
   const [currentUser, setCurrentuser] = useState();
 
-  AsyncStorage.getItem('isUserSignedIn').then(res => {
-    setCurrentuser(res);
-  });
   return (
     <Stack.Navigator
-      initialRouteName="Drawer"
+      initialRouteName="Welcome"
       screenOptions={{
         headerShown: false,
         headerStyle: {
