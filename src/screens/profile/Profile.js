@@ -126,6 +126,7 @@ export default function Profile({navigation, props}) {
                   borderColor: customColor.primaryColor,
                   borderColor: customColor.steelblue,
 
+
                   borderColor: customColor.steelblue,
 
                   // left: 3,
