@@ -122,7 +122,10 @@ export default function Profile({navigation, props}) {
                   height: 100,
                   borderRadius: 15,
                   borderWidth: 2,
+
                   borderColor: customColor.primaryColor,
+                  borderColor: customColor.steelblue,
+
                   borderColor: customColor.steelblue,
 
                   // left: 3,
