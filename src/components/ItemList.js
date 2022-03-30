@@ -2,10 +2,11 @@ import React from 'react';
 
 import {View, FlatList, StyleSheet, TouchableOpacity} from 'react-native';
 
-import { useNavigation } from '@react-navigation/native';
+import {useNavigation} from '@react-navigation/native';
 import Item from './Item';
+import customColor from '../assets/colors/customColor';
 
-const ItemList = ({ itemData }) => {
+const ItemList = ({itemData}) => {
   const navigation = useNavigation();
 
   return (
@@ -16,10 +17,10 @@ const ItemList = ({ itemData }) => {
           data={itemData}
           horizontal={true}
           keyExtractor={item => item.itemGroupId}
-          renderItem={({ item }) => {
+          renderItem={({item}) => {
             return (
               <TouchableOpacity
-                onPress={() => navigation.navigate('CheckOut', { item: item })}>
+                onPress={() => navigation.navigate('CheckOut', {item: item})}>
                 <Item item={item} />
               </TouchableOpacity>
             );
@@ -33,8 +34,6 @@ const ItemList = ({ itemData }) => {
 const styles = StyleSheet.create({
   container: {
     marginLeft: 15,
-
-
   },
 });
 

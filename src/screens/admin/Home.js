@@ -1,18 +1,25 @@
 import React, {useEffect, useState} from 'react';
-import {View, Text, StyleSheet, TouchableOpacity} from 'react-native';
-import {useDispatch} from 'react-redux';
+import {
+  View,
+  Text,
+  StyleSheet,
+  TouchableOpacity,
+  ScrollView,
+} from 'react-native';
+import {useDispatch, useSelector} from 'react-redux';
 import {getDataFromIncomingInventory} from '../../redux/actions/DBAction';
 
 import customColor from '../../assets/colors/customColor';
-import UserTab from '../../components/UserTab';
 
-import MenuItem from '../../components/MenuItem';
-
-import Header from '../../components/Header';
 import Icon from 'react-native-vector-icons/FontAwesome';
+import SearchBar from '../../components/SearchBar';
+import ItemList from '../../components/ItemList';
 
 const AdminHome = ({navigation}) => {
   const [uniqueCollection, setUniqueCollection] = useState([]);
+  const {storeData} = useSelector(state => state.DBReducer);
+  const [searchText, setSearchText] = useState();
+  const [filteredItems, setFilteredItems] = useState([]);
 
   const dispatch = useDispatch();
   const fetchData = () => dispatch(getDataFromIncomingInventory(filterList));
@@ -31,8 +38,21 @@ const AdminHome = ({navigation}) => {
       console.log('data not availble');
     }
   };
-
+  const searchItems = searchField => {
+    setSearchText(searchField);
+    setFilteredItems(
+      storeData.filter(
+        item =>
+          item.itemCategory === searchField ||
+          item.itemGroup === searchField ||
+          item.itemName === searchField ||
+          item.itemGroupId === searchField,
+      ),
+    );
+    // console.log(filteredItems);
+  };
   useEffect(() => {
+    fetchData();
     // const listener = navigation.addListener('focus', () => {
     //   fetchData();
     // });
@@ -41,26 +61,36 @@ const AdminHome = ({navigation}) => {
 
   return (
     <View style={styles.container}>
-      {/* <Header title="Home" nav={navigation} /> */}
-
-      {/* <UserTab navigation={navigation} /> */}
-      <Text style={styles.heading}>Add Your Item Here!</Text>
-      {/* <View>
-        <TouchableOpacity
-          onPress={() => navigation.navigate('AddItem')}
-          style={styles.button}>
-          <Text style={styles.buttonText}>GO TO ADDITEM</Text>
-        </TouchableOpacity>
-      </View> */}
-      {/* <View style={styles.menuWrapper}>
-        {uniqueCollection.map(item => {
-          return (
-            <View key={item}>
-              <MenuItem title={item} />
-            </View>
-          );
-        })}
-      </View> */}
+      <SearchBar
+        term={searchText}
+        onChangeTerm={newTerm => searchItems(newTerm)}
+      />
+      {searchText ? (
+        filteredItems.length > 0 ? (
+          <ScrollView style={{backgroundColor: 'white'}}>
+            {filteredItems.map(item => {
+              return (
+                <View key={item.itemGroupId}>
+                  <Text style={styles.titleHeader}>{item.itemGroup}</Text>
+                  <ItemList
+                    itemData={filteredItems.filter(
+                      data => data.itemGroup === item.itemGroup,
+                    )}
+                  />
+                </View>
+              );
+            })}
+          </ScrollView>
+        ) : (
+          <View style={styles.placeHolderTextStyle}>
+            <Text style={styles.heading}>No Items Available</Text>
+          </View>
+        )
+      ) : (
+        <View style={styles.placeHolderTextStyle}>
+          <Text style={styles.heading}>Searched Item Will Appear Here!</Text>
+        </View>
+      )}
       <TouchableOpacity
         onPress={() => navigation.navigate('AddItem')}
         style={styles.buttonStyles}>
@@ -80,12 +110,24 @@ const styles = StyleSheet.create({
     backgroundColor: customColor.white,
     flex: 1,
   },
+  placeHolderTextStyle: {
+    flex: 1,
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
   heading: {
     textAlign: 'center',
-    fontSize: 25,
+    fontSize: 20,
     fontFamily: 'Montserrat-Medium',
     paddingVertical: 15,
     color: customColor.primaryColor,
+  },
+  titleHeader: {
+    fontSize: 20,
+    fontWeight: 'bold',
+    color: 'steelblue',
+    marginLeft: 15,
+    marginBottom: 5,
   },
   menuWrapper: {
     marginTop: 30,

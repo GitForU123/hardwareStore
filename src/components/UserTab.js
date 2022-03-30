@@ -1,19 +1,7 @@
-
 import {useFocusEffect, useNavigation} from '@react-navigation/native';
-import React, { useEffect, useState } from 'react';
+import React, {useEffect, useState} from 'react';
 
-import {useNavigation} from '@react-navigation/native';
-import React from 'react';
-
-import {
-  View,
-  Text,
-  Button,
-  FlatList,
-  StyleSheet,
-  Image,
-  TouchableOpacity,
-} from 'react-native';
+import {View, Text, Button, FlatList, StyleSheet, Image} from 'react-native';
 import useAuth from '../hooks/useAuth';
 import auth from '@react-native-firebase/auth';
 import firestore from '@react-native-firebase/firestore';
@@ -23,7 +11,8 @@ const UserTab = () => {
   const navigation = useNavigation();
   const {user} = useAuth();
   const [result, setResult] = useState([]);
-  const image = "https://cdn.pixabay.com/photo/2020/07/01/12/58/icon-5359553_960_720.png"
+  const image =
+    'https://cdn.pixabay.com/photo/2020/07/01/12/58/icon-5359553_960_720.png';
 
   // useEffect(() => {
   //   console.log('user tab screen');
@@ -45,33 +34,31 @@ const UserTab = () => {
 
   useFocusEffect(
     React.useCallback(() => {
-    console.log('user tab screen');
-    const getdetails = async () => {
-      // setLoading(true);
-      const querySnap = await firestore()
-        .collection('users')
-        .where('uid', '==', auth().currentUser.uid)
-        .get();
-      let res = querySnap.docs.map(docSnap => docSnap.data());
-      setResult(res[0]);
-      // setLoading(false);
-      console.log('res ', res);
-      console.log('result after set', result);
-      console.log('result after set at user tab screen', result);
-    };
-    getdetails();
-  }, [])
+      console.log('user tab screen');
+      const getdetails = async () => {
+        // setLoading(true);
+        const querySnap = await firestore()
+          .collection('users')
+          .where('uid', '==', auth().currentUser.uid)
+          .get();
+        let res = querySnap.docs.map(docSnap => docSnap.data());
+        setResult(res[0]);
+        // setLoading(false);
+        console.log('res ', res);
+        console.log('result after set', result);
+        console.log('result after set at user tab screen', result);
+      };
+      getdetails();
+    }, []),
   );
 
   return (
     <View style={styles.container}>
-      {user.displayName ? (
+      {user ? (
         <View style={styles.userTabWrapper}>
-          <TouchableOpacity
-            style={styles.imageStyle}
-            onPress={() => navigation.navigate('ProfileDrawer')}>
+          <View style={styles.imageStyle}>
             <Image style={styles.imageStyle} source={{uri: user.photoURL}} />
-          </TouchableOpacity>
+          </View>
           <Text style={styles.textStyle}>Hi,{user.displayName}</Text>
         </View>
       ) : (
