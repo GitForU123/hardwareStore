@@ -7,8 +7,6 @@ import LogIn from '../src/screens/authentication/Login';
 import Register from '../src/screens/authentication/Register';
 import Welcome from '../src/screens/welcome/Welcome';
 
-import AdminTabNavigator from './TabNavigator';
-
 import AddItem from '../src/screens/admin/AddItem';
 import CollectionScreen from '../src/screens/admin/CollectionScreen';
 import DatePicker from '../src/components/DatePicker';
@@ -16,7 +14,7 @@ import CheckOut from '../src/screens/admin/Checkout';
 import customColor from '../src/assets/colors/customColor';
 
 import Support from '../src/screens/profile/Support';
-import Drawer from './DrawerNavigator';
+
 import CustomDrawerNavigator from './DrawerNavigator';
 import AddItemCategoryGroup from '../src/screens/admin/AddCategoryGroup';
 import EditScreen from '../src/screens/profile/EditScreen';

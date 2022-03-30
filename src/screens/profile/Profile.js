@@ -42,7 +42,7 @@ export default function Profile({navigation, props}) {
     // handleSignOut();
     navigation.reset({
       index: 0,
-      routes: [{name: 'LogIn'}],
+      routes: [{name: 'Register'}],
     });
   };
 
@@ -66,22 +66,19 @@ export default function Profile({navigation, props}) {
 
   useFocusEffect(
     React.useCallback(() => {
-    console.log('user tab screen');
-    const getdetails = async () => {
-      // setLoading(true);
-      const querySnap = await firestore()
-        .collection('users')
-        .where('uid', '==', auth().currentUser.uid)
-        .get();
-      let res = querySnap.docs.map(docSnap => docSnap.data());
-      setResult(res[0]);
-      // setLoading(false);
-      console.log('res ', res);
-      console.log('result after set', result);
-      console.log('result after set at user tab screen', result);
-    };
-    getdetails();
-  }, [])
+      console.log('user tab screen');
+      const getdetails = async () => {
+        // setLoading(true);
+        const querySnap = await firestore()
+          .collection('users')
+          .where('uid', '==', auth().currentUser.uid)
+          .get();
+        let res = querySnap.docs.map(docSnap => docSnap.data());
+        setResult(res[0]);
+        // setLoading(false);
+      };
+      getdetails();
+    }, []),
   );
 
   useEffect(() => {
@@ -100,8 +97,6 @@ export default function Profile({navigation, props}) {
         </View>
       ) : (
         <>
-
-
           <View style={styles.userInfoSection}>
             <View
               style={{
@@ -114,8 +109,7 @@ export default function Profile({navigation, props}) {
                   // uri: result
                   //   ? result.image || user?.photoURL
                   //   : 'https://www.pngall.com/wp-content/uploads/12/Avatar-Profile-PNG-Cutout.png',
-                  uri: result?.image ? result.image : user?.photoURL
-                
+                  uri: result?.image ? result.image : user?.photoURL,
                 }}
                 style={{
                   width: 100,
@@ -125,7 +119,6 @@ export default function Profile({navigation, props}) {
 
                   borderColor: customColor.primaryColor,
                   borderColor: customColor.steelblue,
-
 
                   borderColor: customColor.steelblue,
 
@@ -144,10 +137,13 @@ export default function Profile({navigation, props}) {
                     },
                   ]}>
                   {/* {result.name} */}
-                  {result?.username? result.username : user?.displayName}
+                  {result?.username ? result.username : user?.displayName}
                 </Title>
                 <Caption style={styles.caption}>
-                  @{result?.username? result?.username?.slice(0, 5) : user?.displayName?.slice(0, 5)}
+                  @
+                  {result?.username
+                    ? result?.username?.slice(0, 5)
+                    : user?.displayName?.slice(0, 5)}
                   {number}
                 </Caption>
               </View>
@@ -160,7 +156,9 @@ export default function Profile({navigation, props}) {
               <Text style={{color: '#777777', marginLeft: 20, fontSize: 14}}>
                 {/* {result.address + ', ' + result.city} */}
                 {/* Whitefield, Bangalore */}
-                {result?.city ? result.city + ' ' + result.address : "New Delhi"}
+                {result?.city
+                  ? result.city + ' ' + result.address
+                  : 'New Delhi'}
               </Text>
             </View>
             <View style={styles.row}>
@@ -168,7 +166,7 @@ export default function Profile({navigation, props}) {
               <Text style={{color: '#777777', marginLeft: 20, fontSize: 14}}>
                 {/* {result.phone} */}
                 {/* 9999888827 */}
-                {result?.phone ? result.phone : "1800 251 364"}
+                {result?.phone ? result.phone : '1800 251 364'}
               </Text>
             </View>
             <View style={styles.row}>
@@ -239,30 +237,30 @@ export default function Profile({navigation, props}) {
             </TouchableRipple>
 
             {/* Edit profile */}
-            {!user.displayName &&
-            <TouchableRipple
-            //   onPress={() => {
-            //     navigation.navigate('Edit', {
-            //       phone: result.phone,
-            //       name: result.name,
-            //       city: result.city,
-            //       address: result.address,
-            //     });
-            //   }}
-              onPress={() => {
-                // Alert.alert('Edit Profile', 'We can edit name, phone num')
-                navigation.navigate('EditScreen');
-              }}
-              >
-              <View style={styles.menuItem}>
-                <Icon
-                  name="account-edit"
-                //   color={red}
-                  size={25}
-                />
-                <Text style={styles.menuItemText}>Edit Profile</Text>
-              </View>
-            </TouchableRipple>}
+            {!user.displayName && (
+              <TouchableRipple
+                //   onPress={() => {
+                //     navigation.navigate('Edit', {
+                //       phone: result.phone,
+                //       name: result.name,
+                //       city: result.city,
+                //       address: result.address,
+                //     });
+                //   }}
+                onPress={() => {
+                  // Alert.alert('Edit Profile', 'We can edit name, phone num')
+                  navigation.navigate('EditScreen');
+                }}>
+                <View style={styles.menuItem}>
+                  <Icon
+                    name="account-edit"
+                    //   color={red}
+                    size={25}
+                  />
+                  <Text style={styles.menuItemText}>Edit Profile</Text>
+                </View>
+              </TouchableRipple>
+            )}
             {/* <TouchableRipple
             //   onPress={() => {
             //     navigation.navigate('Address', {
